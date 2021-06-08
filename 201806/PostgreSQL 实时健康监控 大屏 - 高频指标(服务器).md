@@ -1,0 +1,260 @@
+## PostgreSQL 实时健康监控 大屏 - 高频指标(服务器) - 珍藏级   
+                     
+### 作者                                                                 
+digoal                                                                 
+                                                                 
+### 日期                                                                 
+2018-06-13                                                               
+                                                                 
+### 标签                                                                 
+PostgreSQL , 大屏指标 , qps , long query , locks , active , idle in transaction , long idle in transaction , 2PC    
+                
+----                                
+           
+## 背景     
+最关键的一些数据库健康指标，趋势监测。    
+    
+## 1 CPU  
+  
+1,5,15分钟平均负载，超过CPU核数时，较高，需要关注优化或拆库或加资源。    
+  
+```  
+uptime  
+ 21:29:36 up 36 days, 10:46,  2 users,  load average: 0.00, 0.75, 1.25  
+```  
+  
+## 2 IO读写吞吐  
+  
+man iostat看所有指标含义  
+  
+```  
+iostat -x 1  
+Linux 3.10.0-693.2.2.el7.x86_64 (iZbp13nu0s9j3x3op4zpd4Z)       06/13/2018      _x86_64_        (56 CPU)  
+  
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle  
+           0.32    0.00    0.14    0.02    0.00   99.52  
+  
+Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util  
+vda               0.00     0.08    0.03    0.23     1.01     5.63    51.49     0.01   32.23    8.77   35.39   0.64   0.02  
+vdb               0.00     1.32    0.03   10.28     9.84  1123.44   219.71     0.14   13.82    7.63   13.84   0.17   0.18  
+vdc               0.00     0.39    0.05    1.56     7.25   183.56   237.36     0.00    0.94    1.34    0.93   0.10   0.02  
+```  
+  
+## 3 读写IOPS  
+  
+都来自iostat  
+  
+## 4 读写IO响应延迟  
+  
+都来自iostat  
+  
+## 5 block device UTIL  
+  
+都来自iostat  
+  
+100%表示BLOCK设备已非常繁忙，需要加资源，比如换SSD。  
+  
+## 6 内存  
+  
+Documentation/filesystems/proc.txt  
+  
+可用内存  
+  
+脏页  
+  
+页表大小  
+  
+```  
+cat /proc/meminfo   
+MemTotal:       230943368 kB  
+MemFree:         1177172 kB  
+MemAvailable:   218722632 kB  可用内存  
+Buffers:          559332 kB  
+Cached:         222984788 kB  
+SwapCached:            0 kB  
+Active:         123800268 kB  
+Inactive:       99803032 kB  
+Active(anon):    1934628 kB  
+Inactive(anon):  7540356 kB  
+Active(file):   121865640 kB  
+Inactive(file): 92262676 kB  
+Unevictable:           0 kB  
+Mlocked:               0 kB  
+SwapTotal:             0 kB  
+SwapFree:              0 kB  
+Dirty:              2208 kB  脏页  
+Writeback:             0 kB  
+AnonPages:         59560 kB  
+Mapped:          6962900 kB  
+Shmem:           9415496 kB  
+Slab:            4724068 kB  
+SReclaimable:    4567004 kB  
+SUnreclaim:       157064 kB  
+KernelStack:        8816 kB  
+PageTables:        29400 kB  页表大小  
+NFS_Unstable:          0 kB  
+Bounce:                0 kB  
+WritebackTmp:          0 kB  
+CommitLimit:    207849028 kB  
+Committed_AS:   69435832 kB  
+VmallocTotal:   34359738367 kB  
+VmallocUsed:      432284 kB  
+VmallocChunk:   34359294992 kB  
+HardwareCorrupted:     0 kB  
+AnonHugePages:         0 kB  
+HugePages_Total:       0  
+HugePages_Free:        0  
+HugePages_Rsvd:        0  
+HugePages_Surp:        0  
+Hugepagesize:    1048576 kB  
+DirectMap4k:      120700 kB  
+DirectMap2M:     4073472 kB  
+DirectMap1G:    232783872 kB  
+```  
+  
+## 6 网络  
+收发带宽  
+  
+dstat  
+  
+```  
+dstat  
+You did not select any stats, using -cdngy by default.  
+----total-cpu-usage---- -dsk/total- -net/total- ---paging-- ---system--  
+usr sys idl wai hiq siq| read  writ| recv  send|  in   out | int   csw   
+  0   0 100   0   0   0|  18k 1313k|   0     0 |   0     0 |3183  6612   
+  0   0 100   0   0   0|   0     0 | 402B  770B|   0     0 | 414   307   
+```  
+  
+## 7 D状态进程数  
+  
+```  
+ps -axo stat|grep -c "D"  
+0  
+```  
+  
+## 8 硬盘健康状态，SSD剩余寿命
+  
+```
+smartctl 或 SSD硬件厂商提供的状态监测软件  
+```
+  
+## 8 服务器硬件错误
+如果有内容，需要维修硬件。  
+  
+```
+cat /var/log/mcelog
+```
+  
+## 9 网卡速率状态变化
+观测由于网线或交换机或网卡接口问题导致的速率变化  
+  
+```
+ethtool eth0
+...
+ethtool ethn
+```
+  
+## 10 文件系统
+1、剩余空间  
+  
+```
+df -h
+```
+  
+2、剩余inode   
+  
+```
+df -i
+```
+       
+## 参考    
+[《Use PostgreSQL collect and analyze Operation System statistics》](../201202/20120214_01.md)    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+#### [PostgreSQL 许愿链接](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216")
+您的愿望将传达给PG kernel hacker、数据库厂商等, 帮助提高数据库产品质量和功能, 说不定下一个PG版本就有您提出的功能点. 针对非常好的提议，奖励限量版PG文化衫、纪念品、贴纸、PG热门书籍等，奖品丰富，快来许愿。[开不开森](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216").  
+  
+  
+#### [9.9元购买3个月阿里云RDS PostgreSQL实例](https://www.aliyun.com/database/postgresqlactivity "57258f76c37864c6e6d23383d05714ea")
+  
+  
+#### [PostgreSQL 解决方案集合](https://yq.aliyun.com/topic/118 "40cff096e9ed7122c512b35d8561d9c8")
+  
+  
+#### [德哥 / digoal's github - 公益是一辈子的事.](https://github.com/digoal/blog/blob/master/README.md "22709685feb7cab07d30f30387f0a9ae")
+  
+  
+![digoal's wechat](../pic/digoal_weixin.jpg "f7ad92eeba24523fd47a6e1a0e691b59")
+  

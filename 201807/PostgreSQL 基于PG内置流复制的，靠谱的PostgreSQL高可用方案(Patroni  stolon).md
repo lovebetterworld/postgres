@@ -1,0 +1,136 @@
+## PostgreSQL 基于PG内置流复制的，靠谱的PostgreSQL高可用方案(Patroni \ stolon) - 珍藏级  
+                      
+### 作者                               
+digoal                             
+                                        
+### 日期                                                                                                                                               
+2018-07-25                                                                          
+                                                                               
+### 标签                                                                            
+PostgreSQL , etcd , raft , 高可用 , Patroni           
+                                                                                                                                                  
+----                                                                                                                                            
+                                                                                                                                                     
+## 背景      
+  
+可能是目前除“基于共享存储的数据库高可用方案”以外，基于PG内置流复制的，最靠谱的PostgreSQL高可用方案。  
+  
+[《Patroni: PostgreSQL High Availability made easy 2018》](20180725_03_pdf_003.pdf)  
+  
+[《Patroni: PostgreSQL High Availability made easy 2016》](20180725_03_pdf_001.pdf)  
+  
+看完下面这个PPT，你会发现Zalando和探探类似，把PG用得比较狠的一家公司。  
+  
+[《Why Zalando trusts in PostgreSQL》](20180725_03_pdf_002.pdf)  
+  
+https://github.com/zalando-stups/java-sproc-wrapper   
+  
+  
+  
+## 参考  
+  
+https://github.com/Zalando   
+  
+https://www.opsdash.com/blog/postgres-getting-started-patroni.html  
+  
+https://media.readthedocs.org/pdf/patroni/latest/patroni.pdf  
+  
+https://pypi.org/project/patroni/  
+  
+https://postgresconf.org/system/events/document/000/000/228/Patroni_tutorial_4x3-2.pdf  
+  
+https://www.linode.com/docs/databases/postgresql/create-a-highly-available-postgresql-cluster-using-patroni-and-haproxy/#what-is-postgresql  
+  
+https://www.cybertec-postgresql.com/en/services/postgresql-replication/clustering-failover/  
+  
+与patroni类似的，GO实现的PG HA管理软件。  
+  
+https://github.com/sorintlab/stolon  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+#### [PostgreSQL 许愿链接](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216")
+您的愿望将传达给PG kernel hacker、数据库厂商等, 帮助提高数据库产品质量和功能, 说不定下一个PG版本就有您提出的功能点. 针对非常好的提议，奖励限量版PG文化衫、纪念品、贴纸、PG热门书籍等，奖品丰富，快来许愿。[开不开森](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216").  
+  
+  
+#### [9.9元购买3个月阿里云RDS PostgreSQL实例](https://www.aliyun.com/database/postgresqlactivity "57258f76c37864c6e6d23383d05714ea")
+  
+  
+#### [PostgreSQL 解决方案集合](https://yq.aliyun.com/topic/118 "40cff096e9ed7122c512b35d8561d9c8")
+  
+  
+#### [德哥 / digoal's github - 公益是一辈子的事.](https://github.com/digoal/blog/blob/master/README.md "22709685feb7cab07d30f30387f0a9ae")
+  
+  
+![digoal's wechat](../pic/digoal_weixin.jpg "f7ad92eeba24523fd47a6e1a0e691b59")
+  
