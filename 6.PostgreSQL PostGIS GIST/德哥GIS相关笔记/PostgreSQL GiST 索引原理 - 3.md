@@ -1,5 +1,5 @@
 ## PostgreSQL GiST 索引原理 - 3           
-            
+
 ### 作者            
 digoal            
             
@@ -9,8 +9,8 @@ digoal
 ### 标签            
 PostgreSQL , GiST , 索引原理             
             
-----            
-            
+----
+
 ## 背景        
 RD-Tree, 在全文检索中的应用.    
     
@@ -38,8 +38,8 @@ postgres=# insert into ts(doc) values
   ('She slits the sheet she sits on.');    
     
 postgres=# update ts set doc_tsv = to_tsvector(doc);    
-```    
-    
+```
+
 It is, certainly, convenient to entrust a trigger with the last step (conversion of the document to "tsvector").    
     
 ```    
@@ -72,8 +72,8 @@ doc_tsv | 'ever':8 'sheet':5,10 'sleekest':4 'slit':9 'slitter':6
 -[ RECORD 9 ]----------------------------------------------------    
 doc     | She slits the sheet she sits on.    
 doc_tsv | 'sheet':4 'sit':6 'slit':2    
-```    
-    
+```
+
 How should the index be structured? Use of R-tree directly is not an option since it is unclear how to define a "bounding rectangle" for documents. But we can apply some modification of this approach for sets, a so-called RD-tree (RD stands for "Russian Doll"). A set is understood to be a set of lexemes in this case, but in general, a set can be any.    
     
 An idea of RD-trees is to replace a bounding rectangle with a bounding set, that is, a set that contains all elements of child sets.    
@@ -114,8 +114,8 @@ slit     0001000
 slitter  0000001    
 upon     0000010    
 whoever  0010000    
-```    
-    
+```
+
 Then signatures of the documents are like these:    
     
 每篇文档的签名由所有lexemes对应bit的bitand的结果    
@@ -130,8 +130,8 @@ I am a sheet slitter.                                  0000101
 I slit sheets.                                         0001100    
 I am the sleekest sheet slitter that ever slit sheets. 0101101    
 She slits the sheet she sits on.                       0011100    
-```    
-    
+```
+
 The index tree can be represented as follows:    
     
 ![pic](20201004_03_pic_003.png)    
@@ -170,8 +170,8 @@ body_plain | Andrew Martin wrote:                                               
            | OK, I think I understand the current array behavior, which is apparently+    
            | different than the behavior for v1.0x.                                  +    
              ...    
-```    
-    
+```
+
 Adding and filling in the column of "tsvector" type and building the index. Here we will join three values in one vector (subject, author, and message text) to show that the document does not need to be one field, but can consist of totally different arbitrary parts.    
     
 ```    
@@ -186,8 +186,8 @@ DETAIL:  Words longer than 2047 characters are ignored.
 UPDATE 356125    
     
 fts=# create index on mail_messages using gist(tsv);     
-```    
-    
+```
+
 As we can see, a certain number of words were dropped because of too large size. But the index is eventually created and can support search queries:    
     
 ```    
@@ -203,8 +203,8 @@ select * from mail_messages where tsv @@ to_tsquery('magic & value');
  Planning time: 0.203 ms    
  Execution time: 416.492 ms    
 (5 rows)    
-```    
-    
+```
+
 We can see that together with 898 rows matching the condition, the access method returned 7859 more rows that were filtered out by rechecking with the table. This demonstrates a negative impact of the loss of accuracy on the efficiency.    
     
 ### Internals    
@@ -225,30 +225,12 @@ where a is not null;
      4 | 64 unique words    
      4 | 42 unique words    
 ...    
-```    
-    
+```
+
 Values of the specialized type "gtsvector" that are stored in index rows are actually the signature plus, maybe, the source "tsvector". If the vector is available, the output contains the number of lexemes (unique words), otherwise, the number of true and false bits in the signature.    
     
 It is clear that in the root node, the signature degenerated to "all ones", that is, one index level became absolutely useless (and one more became almost useless, with only four false bits).    
     
 ## 参考    
-    
+
 https://postgrespro.com/blog/pgsql/4175817    
-    
-    
-  
-#### [PostgreSQL 许愿链接](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216")
-您的愿望将传达给PG kernel hacker、数据库厂商等, 帮助提高数据库产品质量和功能, 说不定下一个PG版本就有您提出的功能点. 针对非常好的提议，奖励限量版PG文化衫、纪念品、贴纸、PG热门书籍等，奖品丰富，快来许愿。[开不开森](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216").  
-  
-  
-#### [9.9元购买3个月阿里云RDS PostgreSQL实例](https://www.aliyun.com/database/postgresqlactivity "57258f76c37864c6e6d23383d05714ea")
-  
-  
-#### [PostgreSQL 解决方案集合](https://yq.aliyun.com/topic/118 "40cff096e9ed7122c512b35d8561d9c8")
-  
-  
-#### [德哥 / digoal's github - 公益是一辈子的事.](https://github.com/digoal/blog/blob/master/README.md "22709685feb7cab07d30f30387f0a9ae")
-  
-  
-![digoal's wechat](../pic/digoal_weixin.jpg "f7ad92eeba24523fd47a6e1a0e691b59")
-  

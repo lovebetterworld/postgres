@@ -1,5 +1,5 @@
 ## PostgreSQL GiST 索引原理 - 1       
-        
+
 ### 作者        
 digoal        
         
@@ -9,8 +9,8 @@ digoal
 ### 标签        
 PostgreSQL , GiST , 索引原理         
         
-----        
-        
+----
+
 ## 背景       
 [《PostgreSQL 9种索引的原理和应用场景》](../201706/20170627_01.md)      
     
@@ -33,34 +33,37 @@ https://www.postgresql.org/docs/13/xindex.html
 - 高度平衡树: 包括root, internal, leaf page. 从索引的root节点开始搜索到每个叶子结点的高度是一致的. (GiST is a height-balanced tree that consists of node pages. The nodes consist of index rows.)    
 - leaf node的每一行包括: 关联的predicate 函数(返回boolean的表达式)、heap ctid 地址(行号).  这条heap tuple的value必须匹配这个predicate 函数(即返回true). 例如exp(CONST val)    
 - internal node的每一行包括: 关联的predicate 函数(返回boolean的表达式)、child node的地址.  child node对应的所有heap tuple(s)的value必须匹配这个predicate 函数(即返回true). 例如exp(CONST val). (In other words, the predicate of an internal row comprises the predicates of all child rows.)    
-    
+  
+
 数据搜索:     
 - 每一个支持索引的PG的操作符都必须对应一个consistency function, 用于搜索数据.  ```indexed-field operator expression```, 例如 ```where box @> point``` 这里的 ```@>```    
 - 对于internal row, consistency_func(CONST val)返回true时, 表示对应child node可能有满足条件的记录.    
 - 对于leaf row, consistency_func(CONST val)返回true时, 表示对应heap tuple符合查询要求.    
-    
+  
+
 搜索顺序:    
 - 从root node开始搜索.    
 - 深度优先. 当同一level有很多node符合consistency function条件时, 从一个node深挖, 直到leaf node, 找到符合条件的记录为止. 所以返回limit n少量行, 效果非常好.     
     - The search starts with a root node, as a normal tree search. The consistency function permits to find out which child nodes it makes sense to enter (there may be several of them) and which it does not. The algorithm is then repeated for each child node found. And if the node is leaf, the row selected by the consistency function is returned as one of the results.    
     - The search is depth-first: the algorithm first tries to reach a leaf node. This permits to return first results soon whenever possible (which might be important if the user is interested in only several results rather than all of them).    
     
+
 索引的逻辑膨胀(插入、删除、更新):    
 - 当数据写入时, 最理想的情况是被选择的node的predict func(CONST val)可以包含被插入的value. 不需要打乱数据结构. 但是有些情况可能需要split CONST val, 或者新增node. 导致膨胀.    
 - 当数据删除时, 被删除记录所在的node的CONST val不会缩小范围. 虽然数据占用的空间没有膨胀, 但是逻辑范围实际上是稀疏(膨胀)的, 可能影响搜索效率.     
 - 收缩逻辑膨胀与物理碰撞. reindex或vacuum full. 或者使用pg_repack在线收缩.    
-    
+  
 ### 1、数据分配(predicate)函数    
 数据逻辑重组为node时需要的predict function. 每个node对应有CONST val, 这个node的predict_express(CONST val)返回true.     
     
 ### 2、搜索(consistency、Strategy)函数    
-    
+
 每个操作符(索引搜索)对应一个consis_func.    
     
 搜索时, 使用consis_func(CONST val), 返回true表示这个node的记录或child node满足这个搜索条件.    
     
 ## 2、使用什么插件观察GiST的结构    
-    
+
 常规的“ pageinspect” 插件不允许查看GiST索引。但是还有另一种方法可用：“ gevel” 扩展插件。它不包括在标准交付中，因此请参阅安装说明。    
     
 http://www.sai.msu.su/~megera/wiki/Gevel    
@@ -85,8 +88,8 @@ postgres=# select * from gist_stat('airports_coordinates_idx');
  Total size of index:       5652480 bytes+    
      
 (1 row)    
-```    
-    
+```
+
 输出索引树    
     
 ```    
@@ -101,8 +104,8 @@ postgres=# select * from gist_tree('airports_coordinates_idx');
              3(l:3) blk: 72 numTuple: 7 free: 7840b(3.92%) rightlink:23 (OK)            +    
              4(l:3) blk: 115 numTuple: 17 free: 7400b(9.31%) rightlink:33 (OK)          +    
  ...    
-```    
-    
+```
+
 输出存储在索引行中的数据。函数的结果必须强制转换为所需的数据类型。例子使用的是rtree point类型, 所以CONST val是“框”（边界矩形）。    
     
 ```    
@@ -117,10 +120,10 @@ postgres=# select level, a from gist_print('airports_coordinates_idx')
      1 | (-77.3191986083984,79.9946975708),(-179.876998901,-43.810001373291)    
      1 | (-39.864200592041,82.5177993774),(-81.254096984863,-64.2382965088)    
 (5 rows)    
-```    
-    
+```
+
 ## 3、使用什么SQL能查询GiST索引支持的操作符号以及对应的搜索(一致性、策略)函数    
-    
+
 ```    
 postgres=# select amop.amopopr::regoperator, amop.amoppurpose, amop.amopstrategy    
 from pg_opclass opc, pg_opfamily opf, pg_am am, pg_amop amop    
@@ -143,13 +146,13 @@ and amop.amoplefttype = opc.opcintype;
  <@(point,polygon) | s           |           48  contained in polygon    
  <@(point,circle)  | s           |           68  contained in circle    
 (9 rows)    
-```    
-    
+```
+
 - S 表示这是普通搜索函数.    
 - O 表示这个是order by函数.    
-    
+  
 ## 4、R-tree for points例子    
-    
+
 We will illustrate the above by example of an index for points in a plane (we can also build similar indexes for other geometric entities). A regular B-tree does not suit this data type of data since no comparison operators are defined for points.    
     
 The idea of R-tree is to split the plane into rectangles that in total cover all the points being indexed. An index row stores a rectangle, and the predicate can be defined like this: "the point sought lies within the given rectangle".    
@@ -181,8 +184,8 @@ postgres=# insert into points(p) values
   (point '(5,5)'), (point '(7,8)'), (point '(8,6)');    
     
 postgres=# create index on points using gist(p);    
-```    
-    
+```
+
 With this splitting, the index structure will look as follows:    
 ![pic](20201004_01_pic_005.png)    
     
@@ -199,8 +202,8 @@ postgres=# explain(costs off) select * from points where p <@ box '(2,1),(7,4)';
  Index Only Scan using points_p_idx on points    
    Index Cond: (p <@ '(7,4),(2,1)'::box)    
 (2 rows)    
-```    
-    
+```
+
 The consistency function of the operator (```indexed-field <@ expression```, where indexed-field is a point and expression is a rectangle) is defined as follows. For an internal row, it returns "yes" if its rectangle intersects with the rectangle defined by the expression. For a leaf row, the function returns "yes" if its point ("collapsed" rectangle) is contained in the rectangle defined by the expression.    
     
 ![pic](20201004_01_pic_006.png)    
@@ -220,10 +223,10 @@ postgres=# select * from points where p <@ box '(2,1),(7,4)';
  (3,2)    
  (6,3)    
 (2 rows)    
-```    
-    
+```
+
 ## 5、使用GiST索引排序 - 例如二维平面给出某个point, 按距离这个point的顺序返回记录    
-    
+
 Operators discussed so far (such as ```<@``` in the predicate ```p <@ box '(2,1),(7,4)'```) can be called search operators since they specify search conditions in a query.    
     
 There is also another operator type: ordering operators. They are used for specifications of the sort order in ORDER BY clause instead of conventional specifications of column names. The following is an example of such a query:    
@@ -236,8 +239,8 @@ postgres=# select * from points order by p <-> point '(4,7)' limit 2;
  (5,5)    
  (7,8)    
 (2 rows)    
-```    
-    
+```
+
 ```p <-> point '(4,7)'``` here is an expression that uses an ordering operator ```<->```, which denotes the distance from one argument to the other one. The meaning of the query is to return two points closest to the point ```(4,7)```. Search like this is known as ```k-NN - k-nearest neighbor search```. To support queries of this kind, an access method must define an additional distance function, and the ordering operator must be included in the appropriate operator class (for example, "points_ops" class for points). The query below shows operators, along with their types (```"s" - search and "o" - ordering```):    
     
 ```    
@@ -262,8 +265,8 @@ and amop.amoplefttype = opc.opcintype;
  <@(point,polygon) | s           |           48  contained in polygon    
  <@(point,circle)  | s           |           68  contained in circle    
 (9 rows)    
-```    
-    
+```
+
 The numbers of strategies are also shown, with their meanings explained. It is clear that there are far more strategies than for "btree", only some of them being supported for points. Different strategies can be defined for other data types.    
     
 The distance function is called for an index element, and it must compute the distance (taking into account the operator semantics) from the value defined by the expression ("indexed-field ordering-operator expression") to the given element. For a leaf element, this is just the distance to the indexed value. For an internal element, the function must return the minimum of the distances to the child leaf elements. Since going through all child rows would be pretty costly, the function is permitted to optimistically underestimate the distance, but at the expense of reducing the search efficiency. However, the function is never permitted to overestimate the distance since this will disrupt the work of the index.    
@@ -295,8 +298,8 @@ postgres=# select * from points order by p  point '(4,7)' limit 3;
  (7,8)    
  (8,6)    
 (3 rows)    
-```    
-    
+```
+
 Although the second child node contains all these points, we cannot return ```(8,6)``` without looking into the first child node since this node can contain closer points (since ```4.0 < 4.1```).    
 ![pic](20201004_01_pic_010.png)    
     
@@ -317,20 +320,3 @@ https://www.postgresql.org/docs/13/xindex.html
 [《PostgreSQL 9种索引的原理和应用场景》](../201706/20170627_01.md)      
     
 http://www.sai.msu.su/~megera/wiki/Gevel    
-      
-  
-#### [PostgreSQL 许愿链接](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216")
-您的愿望将传达给PG kernel hacker、数据库厂商等, 帮助提高数据库产品质量和功能, 说不定下一个PG版本就有您提出的功能点. 针对非常好的提议，奖励限量版PG文化衫、纪念品、贴纸、PG热门书籍等，奖品丰富，快来许愿。[开不开森](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216").  
-  
-  
-#### [9.9元购买3个月阿里云RDS PostgreSQL实例](https://www.aliyun.com/database/postgresqlactivity "57258f76c37864c6e6d23383d05714ea")
-  
-  
-#### [PostgreSQL 解决方案集合](https://yq.aliyun.com/topic/118 "40cff096e9ed7122c512b35d8561d9c8")
-  
-  
-#### [德哥 / digoal's github - 公益是一辈子的事.](https://github.com/digoal/blog/blob/master/README.md "22709685feb7cab07d30f30387f0a9ae")
-  
-  
-![digoal's wechat](../pic/digoal_weixin.jpg "f7ad92eeba24523fd47a6e1a0e691b59")
-  

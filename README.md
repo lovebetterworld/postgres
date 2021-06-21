@@ -1,6 +1,16 @@
-#### [About me](me/readme.md) 
+# 仓库说明
 
-### 一、PostgreSQL, Greenplum 学习视频  
+本来是想直接同步德哥的pg仓库，但是奈何德哥的仓库太大了，都无法直接从GitHub迁移到gitee。但是看到德哥的许多笔记十分有用，于是花了很久时间，把德哥的笔记都过了两遍。
+
+第一遍，发现德哥有很多私人笔记在里面，并不是有关于PostgreSQL相关的，手动做了剔除。
+
+第二遍，发现笔记太过于混乱，不太好明确的找到相应的内容，遂自己做了一个简单的目录。
+
+同时，也将该仓库作为自己学习和研究PostgreSQL的仓库，会不断积累和分享有关PostgreSQL的内容。
+
+
+
+# 二、德哥的PostgreSQL, Greenplum 学习视频  
 
 1、视频下载链接： https://pan.baidu.com/s/1Q5u5NSrb0gL5-psA9DCBUQ   (提取码：5nox   如果链接失效请通知我, 谢谢)  
 - PostgreSQL 9.3 数据库管理与优化 4天  
@@ -8,67 +18,40 @@
 - PostgreSQL 9.1 数据库管理与开发 1天  
 - PostgreSQL 9.3 数据库优化 3天  
 - PostgreSQL 专题讲座  
-  
 
-2、[《2020-PostgreSQL 15大应用场景实践 - 直播回放》](202009/20200903_02.md)  
-3、[《2020-PostgreSQL+MySQL 联合解决方案课程 - 汇总视频、课件》](202001/20200118_02.md)  
-4、[《2019-PostgreSQL 2天体系化培训 - 视频每周更新》](201901/20190105_01.md)  
-5、[《2017-PostgreSQL 应用场景实践 - 含视频》](201805/20180524_02.md)  
-6、[《2019-PG天天象上沙龙纪录- 含视频》](201801/20180121_01.md)  
-7、[《2019-Oracle迁移到PostgreSQL - 实战培训》](201906/20190615_03.md)    
-8、[《2018-PG生态、案例、开发实践系列 - 培训视频》](https://edu.aliyun.com/course/836/lesson/list)  
-9、[《2018-阿里云POLARDB for Oracle|RDS for PPAS 讲解视频》](https://yq.aliyun.com/live/582)  
 
-### 二、学习资料  
 
-1、[《Oracle DBA 增值+转型 PostgreSQL 学习方法、路径》](201804/20180425_01.md)   
-2、[《PostgreSQL、Greenplum 技术+108个场景结合最佳实践《如来神掌》》](201706/20170601_02.md)    
-3、[《PostgreSQL 数据库安全指南 - 以及安全合规》](201506/20150601_01.md)    
-4、[《PostgreSQL 持续稳定使用的小技巧 - 最佳实践、规约、规范》](201902/20190219_02.md)    
-5、[《PostgreSQL DBA最常用SQL》](202005/20200509_02.md)    
-6、[《PostgreSQL 数据库开发规范》](201609/20160926_01.md)    
-7、[《企业数据库选型规则》](197001/20190214_01.md)    
-8、[《PostgreSQL 规格评估 - 微观、宏观、精准 多视角估算数据库性能(选型、做预算不求人)》](201709/20170921_01.md)    
-9、[《数据库选型之 - 大象十八摸 - 致 架构师、开发者》](201702/20170209_01.md)    
-10、[《数据库选型思考(PostgreSQL,MySQL,Oracle)》](201702/20170208_03.md)    
-11、[《快速入门PostgreSQL应用开发与管理 - 1 如何搭建一套学习、开发PostgreSQL的环境》](201704/20170411_01.md)    
-12、[《快速入门PostgreSQL应用开发与管理 - 2 Linux基本操作》](201704/20170411_02.md)    
-13、[《快速入门PostgreSQL应用开发与管理 - 3 访问数据》](201704/20170411_03.md)    
-14、[《快速入门PostgreSQL应用开发与管理 - 4 高级SQL用法》](201704/20170411_04.md)    
-15、[《快速入门PostgreSQL应用开发与管理 - 5 数据定义》](201704/20170411_05.md)    
-16、[《快速入门PostgreSQL应用开发与管理 - 6 事务和锁》](201704/20170412_01.md)    
-17、[《快速入门PostgreSQL应用开发与管理 - 7 函数、存储过程和触发器》](201704/20170412_02.md)    
-18、[《快速入门PostgreSQL应用开发与管理 - 8 PostgreSQL 管理》](201704/20170412_04.md)    
+# 三、学习资料
 
-### 三、[感恩](201803/20180322_12.md)  
-### 四、[思考](class/35.md)  
+[1.PostgreSQL 学习系列](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97)
 
-1、[《PG社区建设方法论 - 五看三定》](202103/20210329_01.md)     
-2、[《PostgreSQL 社区建设思考》](202004/20200426_01.md)    
-3、[《PostgreSQL 社区建设商业策划 {未完}》](202008/20200828_01.md)      
-4、[《[未完] PostgreSQL\Greenplum 社区管理 TODO》](201710/20171017_05.md)    
-5、[《[未完] PostgreSQL\Greenplum Customer视角TODO》](201710/20171017_01.md)    
-6、[《为什么企业应该参与PG社区建设?》](202003/20200321_01.md)    
-7、[《企业为什么纷纷选择阿里云AliPG》](202005/20200523_01.md)    
-8、[《为什么数据库选型和找对象一样重要》](202003/20200322_01.md)    
-9、[《云、商业、开源数据库终局之战 - 商业角度解读PG如何破局 - openapi 、 扩展能力、插件开源协议》](202007/20200727_04.md)    
-10、[《[直播]大话数据库终局之战》](202009/20200926_03.md)      
-11、[《未来数据库方向》](202005/20200527_06.md)    
-12、[《《引爆点》原理, 如何影响PG发展》](197001/20200804_01.md)      
-13、[《打破惯性思维, 引导创新, 引爆流行, PG》](202104/20210411_01.md)        
-14、[《PostgreSQL 核心卖点提取方法》](202006/20200609_02.md)   
-15、[《开源数据库全球化协作浪潮 思考 - 24问》](202101/20210120_02.md)       
-16、[《企业CxO数据库选型应该回答清楚的 15 个问题》](202101/20210117_04.md)         
+[2.PostgreSQL 优势](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/2.PostgreSQL%20%E4%BC%98%E5%8A%BF)
 
-PG官方微信 | PG技术进阶钉钉群</br>每周直播 | digoal </br>个人微信  
----|---|---  
-[pic](./pic/pg_weixin.jpg) | [pic](./pic/dingding_pg_chat.png) | [image.png](https://ucc.alicdn.com/pic/developer-ecology/24ff1d42e2cf4f3a8ae166a243f58cb3.png)  
+[3.PostgreSQL 笔记](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/3.PostgreSQL%20%E7%AC%94%E8%AE%B0)
 
-如发现错误, 请万望指正, 非常感谢.  
+[4.PostgreSQL 课程](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/4.PostgreSQL%20%E8%AF%BE%E7%A8%8B)
 
-欢迎转载(注明出处), 如有问题, 请发issue讨论或微信与我联系, 定抽空尽快回复  
+[5.PostgreSQL 案例](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/5.PostgreSQL%20%E6%A1%88%E4%BE%8B)
 
-### 五、已归类文档如下(归档进行中... ...)  
+[6.PostgreSQL PostGIS GIST](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/6.PostgreSQL%20PostGIS%20GIST)
+
+[7.PostgreSQL 推荐系统](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/7.PostgreSQL%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F)
+
+[8.PostgreSQL 应用开发解决方案](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88)
+
+[9.PostgreSQL 插件](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/9.PostgreSQL%20%E6%8F%92%E4%BB%B6)
+
+[10.PostgreSQL 配置文件](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/10.PostgreSQL%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+
+[11.PostgreSQL PDF资料文档](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/11.PostgreSQL%20PDF%E8%B5%84%E6%96%99%E6%96%87%E6%A1%A3)
+
+[12.PostgreSQL 安装与部署](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/12.PostgreSQL%20%E5%AE%89%E8%A3%85%E4%B8%8E%E9%83%A8%E7%BD%B2)
+
+
+
+# 四、已归类文档 ——此部分请访问德哥github查阅
+
+因为此部分，我看了有些内容没有，遂直接做了删减。
 
 digoal's|PostgreSQL|文章|归类
 ---|---|---|---
@@ -81,11 +64,3 @@ digoal's|PostgreSQL|文章|归类
 **[25 DaaS](class/25.md)** | **[26 垂直行业应用](class/26.md)** | **[27 标准化(规约、制度、流程)](class/27.md)** | **[28 版本升级](class/28.md)**    
 **[29 同、异构数据同步](class/29.md)** | **[30 数据分析](class/30.md)** | **[31 系列课程](class/31.md)** | **[32 其他](class/32.md)**    
 **[33 招聘与求职信息](class/33.md)** | **[34 沙龙、会议、培训](class/34.md)** | **[35 思维精进](class/35.md)** | **[36 视频回放](class/36.md)**    
-
-### 所有文档如下  
-----
-##### 202106//20210606_03.md   [《重新发现PostgreSQL之美 - 15 沙盘推演, 权力的游戏》](202106//20210606_03.md)  
-##### 202106//20210606_02.md   [《MacOS 简单的部署 PostgreSQL》](202106//20210606_02.md)  
-##### 202106//20210606_01.md   [《如何访问维基百科 wikipedia》](202106//20210606_01.md)  
-##### 202106//20210605_07.md   [《重新发现PostgreSQL之美 - 14 bloom 布隆过滤器索引》](202106//20210605_07.md)  
-##### 202106//20210605_06.md   [《GITHUB 网站访问慢, 图片加载慢的解决方法》](202106//20210605_06.md)  

@@ -1,5 +1,5 @@
 ## 重新发现PostgreSQL之美 - 8 轨迹业务IO杀手克星index include(覆盖索引)  
-      
+
 ### 作者      
 digoal      
       
@@ -9,21 +9,24 @@ digoal
 ### 标签      
 PostgreSQL , include index , 聚集 , 轨迹业务 , 金融 , IO杀手 , IO放大        
       
-----      
-      
+----
+
 ## 背景      
 视频回放: https://www.bilibili.com/video/BV1tV41177rY/       
     
 场景痛点:     
 - 轨迹类业务, 一个轨迹由多个点组成, 每个点的ROW写入散落到不同的PAGE, 查询一条轨迹可能要回表访问上百千个PAGE, 号称IO杀手.    
-    
+  
+
 业务:    
 - 共享单车、巡逻车、公务用车、网约车、金融行业股票数据、物联网行业传感器数据等.     
-    
+  
+
 PG index include (覆盖索引)功能:     
 - 重组存储结构, 按指定维度聚集.     
 - 叶子结点存储include column value, 无需回表(轨迹数据都是append only的, VM bit全部都是clean page, 因此无需回表).     
-    
+  
+
 语法:    
     
 ```    
@@ -38,10 +41,10 @@ CREATE [ UNIQUE ] INDEX [ CONCURRENTLY ] [ [ IF NOT EXISTS ] name ] ON [ ONLY ] 
     [ WHERE predicate ]    
     
 URL: https://www.postgresql.org/docs/14/sql-createindex.html    
-```    
-    
+```
+
 ## 例子    
-    
+
 共享单车轨迹    
     
 ```    
@@ -56,8 +59,8 @@ crt_time timestamp  -- 时间
 );    
     
 create index idx_tbl_sensor_track_1 on tbl_sensor_track (sid,traceid,crt_time);    
-```    
-    
+```
+
 写入压测数据, 1000万条, 1000量单车, 每辆单车约10个轨迹, 每个轨迹约1000条记录.      
     
 ```    
@@ -85,8 +88,8 @@ postgres=# explain (analyze,verbose,timing,costs,buffers) select * from tbl_sens
 (6 rows)    
     
 Time: 3.119 ms    
-```    
-    
+```
+
 为什么要访问这么多数据块?    
 传感器都是活跃的, 大家都在写, 某个sid的多条数据必定会分散到多个PAGE中.     
     
@@ -121,15 +124,15 @@ postgres=# select ctid,* from tbl_sensor_track where sid=1 and traceid=1 order b
  (2886,44)   |  216725 |   1 | (0.7654642711557571,0.08884990148832017)     |       1 | a19c9ae847d408b51ea5c6171c1ba5a4 | 2021-05-30 12:12:37.291206    
 ...     
     
-```    
-    
+```
+
 覆盖索引:     
 无需回表, 访问的数据块从976下降到22    
     
 ```    
 create index idx_tbl_sensor_track_2 on tbl_sensor_track (sid,traceid,crt_time) include (id,pos,info);     
-```    
-    
+```
+
 ```    
 postgres=# explain (analyze,verbose,timing,costs,buffers) select * from tbl_sensor_track where sid=1 and traceid=1 order by crt_time;    
                                                                          QUERY PLAN                                                                             
@@ -159,15 +162,15 @@ postgres=# \di+
  public | idx_tbl_sensor_track_2 | index | postgres | tbl_sensor_track | unlogged    | btree         | 994 MB |     
  public | tbl_sensor_track_pkey  | index | postgres | tbl_sensor_track | unlogged    | btree         | 214 MB |     
 (3 rows)    
-```    
-    
+```
+
 并发能力压测      
     
 ```    
 vi test.sql    
 select * from tbl_sensor_track where sid=1 and traceid=1 order by crt_time;    
-```    
-    
+```
+
 全内存命中的情况下, 差异较小, 但是实际生产环境中数据不可能全部在内存中, 此时IO带来的问题就会凸显, 性能差异明显.      
     
 非聚集索引    
@@ -187,8 +190,8 @@ initial connection time = 12.210 ms
 tps = 3058.035523 (without initial connection time)    
 statement latencies in milliseconds:    
          3.925  select * from tbl_sensor_track where sid=1 and traceid=1 order by crt_time;    
-```    
-    
+```
+
 聚集覆盖索引    
     
 ```    
@@ -206,24 +209,25 @@ initial connection time = 12.219 ms
 tps = 3836.628407 (without initial connection time)    
 statement latencies in milliseconds:    
          3.128  select * from tbl_sensor_track where sid=1 and traceid=1 order by crt_time;    
-```    
-    
-    
-    
-    
+```
+
+
+​    
+​    
 ## include index解决了什么问题?    
 1、在某个维度上查询需要返回N条记录, N条记录在HEAP PAGE中非常分散, 需要耗费大量IO的问题.    
 - 不需要联合索引, 减少索引build的时间和复杂度, 并且索引有<1/3 index page的限制, 复合索引会导致数据超长写入失败.    
-    
+  
+
 2、支持按任意维度查询, 每个维度都需要返回N条, N条记录在HEAP PAGE中非常分散, 需要耗费大量IO的问题.    
 - index include 可以按任意维度进行聚集存储. 满足不同维度的大范围搜索需求.  比聚集表要厉害: 聚集表只能按1个维度(也就是PK)来进行存储.     
-    
+  
 ## 其他    
 除了使用index include, 在业务侧也可以改进来解决离散IO问题, 例如    
 - 轨迹合并存储(使用1条记录, 而非存储到N条记录里面.)    
 - 按SID分片存储, 每个SID一个表. 这样就不会和其他SID混PAGE了.    
 - 轨迹合并可以使用PG的PostGIS或者阿里云ganos的轨迹数据类型(支持轨迹的计算、例如伴随、相似、拟合等分析).    
-    
+  
     
 ##### 202104/20210406_04.md   [《PostgreSQL 14 preview - SP-GiST 索引新增 index 叶子结点 include column value 功能 支持》](../202104/20210406_04.md)      
 ##### 202011/20201117_01.md   [《使用Postgres，MobilityDB和Citus大规模(百亿级)实时分析GPS轨迹》](../202011/20201117_01.md)      
@@ -242,20 +246,3 @@ statement latencies in milliseconds:
 ##### 201703/20170312_23.md   [《PostgreSQL 10.0 preview 功能增强 - 唯一约束+附加字段组合功能索引 - 覆盖索引 - covering index》](../201703/20170312_23.md)      
 ##### 201702/20170219_01.md   [《PostgreSQL 聚集存储 与 BRIN索引 - 高并发行为、轨迹类大吞吐数据查询场景解说》](../201702/20170219_01.md)      
 ##### 201606/20160611_02.md   [《PostgreSQL 如何轻松搞定行驶、运动轨迹合并和切分》](../201606/20160611_02.md)      
-    
-  
-#### [PostgreSQL 许愿链接](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216")
-您的愿望将传达给PG kernel hacker、数据库厂商等, 帮助提高数据库产品质量和功能, 说不定下一个PG版本就有您提出的功能点. 针对非常好的提议，奖励限量版PG文化衫、纪念品、贴纸、PG热门书籍等，奖品丰富，快来许愿。[开不开森](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216").  
-  
-  
-#### [9.9元购买3个月阿里云RDS PostgreSQL实例](https://www.aliyun.com/database/postgresqlactivity "57258f76c37864c6e6d23383d05714ea")
-  
-  
-#### [PostgreSQL 解决方案集合](https://yq.aliyun.com/topic/118 "40cff096e9ed7122c512b35d8561d9c8")
-  
-  
-#### [德哥 / digoal's github - 公益是一辈子的事.](https://github.com/digoal/blog/blob/master/README.md "22709685feb7cab07d30f30387f0a9ae")
-  
-  
-![digoal's wechat](../pic/digoal_weixin.jpg "f7ad92eeba24523fd47a6e1a0e691b59")
-  

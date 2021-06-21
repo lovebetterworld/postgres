@@ -1,5 +1,5 @@
 ## PostgreSQL GiST 索引原理 - 4               
-                
+
 ### 作者                
 digoal                
                 
@@ -9,8 +9,8 @@ digoal
 ### 标签                
 PostgreSQL , GiST , 索引原理                 
                 
-----                
-                
+----
+
 ## 背景         
 如何得知GiST索引的属性|功能?     
     
@@ -30,8 +30,8 @@ postgres=# select amname from pg_am;
  spgist    
  brin    
 (6 rows)    
-```    
-    
+```
+
 Let's look at the properties of GiST access method (queries were provided earlier):    
     
 ```    
@@ -47,8 +47,8 @@ order by a.amname;
  gist   | can_unique    | f    
  gist   | can_multi_col | t    
  gist   | can_exclude   | t    
-```    
-    
+```
+
 - can_order.    
     - The access method enables us to specify the sort order for values when an index is created (only applicable to "btree" so far).    
 - can_unique.    
@@ -58,6 +58,7 @@ order by a.amname;
 - can_exclude.    
     - Support of the exclusion constraint EXCLUDE.    
     
+
 Sorting of values and unique constraint are not supported. As we've seen, the index can be built on several columns and used in exclusion constraints.    
     
 查询指定索引的功能:     
@@ -76,18 +77,22 @@ from unnest(array[
  index_scan    | t    
  bitmap_scan   | t    
  backward_scan | f    
-```    
-    
+```
+
 - clusterable.    
+    
     - A possibility to reorder rows according to the index (clustering with the same-name command CLUSTER).    
 - index_scan.    
+    
     - Support of index scan. Although this property may seem odd, not all indexes can return TIDs one by one - some return results all at once and support only bitmap scan.    
 - bitmap_scan.    
+    
     - Support of bitmap scan.    
 - backward_scan.    
     - The result can be returned in the reverse order of the one specified when building the index.    
     
     
+
 And the most interesting properties are those of the column layer. Some of the properties are independent of operator classes:    
     
 ```    
@@ -107,20 +112,25 @@ from unnest(array[
  orderable          | f    
  search_array       | f    
  search_nulls       | t    
-```    
-    
+```
+
 - asc, desc, nulls_first, nulls_last, orderable.    
+    
     - These properties are related to ordering the values (we'll discuss them when we reach a description of "btree" indexes).    
 - distance_orderable.    
+    
     - The result can be returned in the sort order determined by the operation (only applicable to GiST and RUM indexes so far).    
 - returnable.    
+    
     - A possibility to use the index without accessing the table, that is, support of index-only scans.    
 - search_array.    
+    
     - Support of search for several values with the expression ```«indexed-field IN (list_of_constants)»```, which is the same as ```«indexed-field = ANY(array_of_constants)»```.    
 - search_nulls.    
     - A possibility to search by IS NULL and IS NOT NULL conditions.    
     
     
+
 (Sorting is not supported; the index cannot be used to search an array; NULLs are supported.)    
     
 But the two remaining properties, "distance_orderable" and "returnable", will depend on the operator class used. For example, for points we will get:    
@@ -130,8 +140,8 @@ But the two remaining properties, "distance_orderable" and "returnable", will de
 --------------------+------------------------------    
  distance_orderable | t    
  returnable         | t    
-```    
-    
+```
+
 The first property tells that the distance operator is available for search of nearest neighbors. And the second one tells that the index can be used for index-only scan. Although leaf index rows store rectangles rather than points, the access method can return what's needed.    
     
 The following are the properties for intervals:    
@@ -141,8 +151,8 @@ The following are the properties for intervals:
 --------------------+------------------------------    
  distance_orderable | f    
  returnable         | t    
-```    
-    
+```
+
 For intervals, the distance function is not defined and therefore, search of nearest neighbors is not possible.    
     
 And for full-text search, we get:    
@@ -152,8 +162,8 @@ And for full-text search, we get:
 --------------------+------------------------------    
  distance_orderable | f    
  returnable         | f    
-```    
-    
+```
+
 Support of index-only scan has been lost since leaf rows can contain only the signature without the data itself. However, this is a minor loss since nobody is interested in the value of type "tsvector" anyway: this value is used to select rows, while it is source text that needs to be shown, but is missing from the index anyway.    
     
 ## Other data types    
@@ -173,20 +183,3 @@ Finally, we will mention a few more types that are currently supported by GiST a
 https://postgrespro.com/blog/pgsql/4175817        
         
 https://postgrespro.com/blog/pgsql/4161264    
-  
-  
-#### [PostgreSQL 许愿链接](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216")
-您的愿望将传达给PG kernel hacker、数据库厂商等, 帮助提高数据库产品质量和功能, 说不定下一个PG版本就有您提出的功能点. 针对非常好的提议，奖励限量版PG文化衫、纪念品、贴纸、PG热门书籍等，奖品丰富，快来许愿。[开不开森](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216").  
-  
-  
-#### [9.9元购买3个月阿里云RDS PostgreSQL实例](https://www.aliyun.com/database/postgresqlactivity "57258f76c37864c6e6d23383d05714ea")
-  
-  
-#### [PostgreSQL 解决方案集合](https://yq.aliyun.com/topic/118 "40cff096e9ed7122c512b35d8561d9c8")
-  
-  
-#### [德哥 / digoal's github - 公益是一辈子的事.](https://github.com/digoal/blog/blob/master/README.md "22709685feb7cab07d30f30387f0a9ae")
-  
-  
-![digoal's wechat](../pic/digoal_weixin.jpg "f7ad92eeba24523fd47a6e1a0e691b59")
-  
