@@ -2,23 +2,23 @@
 
 
 
-## 背景
+# 背景
 
 物流行业对地理位置信息数据的处理有非常强烈的需求，例如
 
-\1. 实时跟踪快递员、货车的位置信息。对数据库的写入性能要求较高。
+1. 实时跟踪快递员、货车的位置信息。对数据库的写入性能要求较高。
 
-\2. 对于当日件，需要按发货位置，实时召回附近的快递员。
+2. 对于当日件，需要按发货位置，实时召回附近的快递员。
 
-\3. 实时的位置信息非常庞大，为了数据分析的需求，需要保留数据，所以需要廉价的存储。例如对象存储。同时还需要和数据库或分析型的数据库产品实现联动。
+3. 实时的位置信息非常庞大，为了数据分析的需求，需要保留数据，所以需要廉价的存储。例如对象存储。同时还需要和数据库或分析型的数据库产品实现联动。
 
 阿里云的 PostgreSQL + HybridDB for PostgreSQL + OSS 对象存储可以很好的满足这个需求，详细的方案如下。
 
-## 业务描述
+# 业务描述
 
 以物流配送场景为例，介绍阿里云的解决方案。
 
-### 数据量
+## 数据量
 
 快递员：百万级。
 
@@ -30,19 +30,19 @@
 
 所有的快递员，全网一天产生86.4亿条记录。
 
-### 业务需求
+## 业务需求
 
-\1. 绘制快递员轨迹（实时）
+1. 绘制快递员轨迹（实时）
 
-\2. 召回快递员（实时）
+2. 召回快递员（实时）
 
 当天件的需求。
 
-## 表结构设计
+# 表结构设计
 
-### 一、轨迹表设计
+# 一、轨迹表设计
 
-#### 主表
+## 1.1 主表
 
 按快递员ID哈希，128张表。
 
@@ -50,7 +50,7 @@
 
 另一方面的好处是便于扩容。
 
-```
+```plsql
 create table cainiao (  
   uid int,          -- 快递员ID  
   pos point,        -- 快递员位置  
@@ -71,11 +71,11 @@ end;
 $$;  
 ```
 
-#### 子表
+## 1.2 子表
 
 每天1张子表，轮询使用，覆盖到周(便于维护, 导出到OSS后直接truncate)。一共7张子表。
 
-```
+```plsql
 do language plpgsql $$  
 declare  
   sql text;  
@@ -92,7 +92,7 @@ end;
 $$;  
 ```
 
-#### 历史轨迹存储
+## 1.3 历史轨迹存储
 
 OSS对象存储。
 
@@ -102,7 +102,7 @@ OSS对象存储。
 
 https://help.aliyun.com/document_detail/44461.html
 
-#### 10.0分区表的例子(可选)
+## 1.4 10.0分区表的例子(可选)
 
 PostgreSQL 10.0 内置了分区表，所以以上分区，可以直接读写主表。
 
@@ -114,7 +114,7 @@ PostgreSQL 10.0 内置了分区表，所以以上分区，可以直接读写主�
 
 分区表例子
 
-```
+```plsql
 create table cainiao (  
   uid int,   
   pos point,   
@@ -174,7 +174,7 @@ Partitions: cainiao_00 FOR VALUES FROM ('00:00:00') TO ('01:00:00'),
             cainiao_23 FOR VALUES FROM ('23:00:00') TO (UNBOUNDED)  
 ```
 
-### 二、实时位置表
+# 二、实时位置表
 
 实时位置表，记录快递员的实时位置（最后一条记录的位置）。
 
@@ -184,7 +184,7 @@ Partitions: cainiao_00 FOR VALUES FROM ('00:00:00') TO ('01:00:00'),
 
 （假如快递员的位置不能实时上报，那么请使用非unlogged table。）
 
-```
+```plsql
 create unlogged table cainiao_trace_realtime (  
   uid int primary key,   -- 快递员ID  
   pos point,             -- 快递员位置  
@@ -195,11 +195,11 @@ create unlogged table cainiao_trace_realtime (
 
 位置字段，创建GIST空间索引。
 
-```
+```plsql
 create index idx_cainiao_trace_realtime_pos on cainiao_trace_realtime using gist (pos);  
 ```
 
-## 实时位置更新逻辑设计
+## 2.1 实时位置更新逻辑设计
 
 为了实时更新快递员的位置，可以设置一个触发器，在快递员上传实时位置时，自动更新最后的位置。
 
@@ -211,7 +211,7 @@ create index idx_cainiao_trace_realtime_pos on cainiao_trace_realtime using gist
 
 jdbc batch参考:  [《PostgreSQL jdbc batch insert》](https://billtian.github.io/digoal.blog/2017/04/201703/20170329_03.md)
 
-```
+```plsql
 create or replace function ins_cainiao() returns trigger as $$  
 declare  
 begin  
@@ -225,7 +225,7 @@ $$ language plpgsql strict;
 
 对基表添加触发器
 
-```
+```plsql
 do language plpgsql $$  
 declare  
   sql text;  
@@ -244,7 +244,7 @@ $$;
 
 触发器示例如下
 
-```
+```plsql
 postgres=# \d+ cainiao_0_0  
                                           Table "public.cainiao_0_0"  
   Column  |           Type            | Collation | Nullable | Default | Storage | Stats target | Description   
@@ -257,25 +257,25 @@ Triggers:
     tg AFTER INSERT ON cainiao_0_0 FOR EACH ROW EXECUTE PROCEDURE ins_cainiao()  
 ```
 
-## 性能测试
+# 三、性能测试
 
 说明
 
-\1. 本文假设应用程序会根据 快递员UID ，时间字段 拼接出基表的表名。
+1. 本文假设应用程序会根据 快递员UID ，时间字段 拼接出基表的表名。
 
 否则就需要使用PostgreSQL的分区表功能（分区表的性能比直接操作基表差一些）。
 
-\2. 本文使用point代替经纬度，因为point比较好造数据，方便测试。
+2. 本文使用point代替经纬度，因为point比较好造数据，方便测试。
 
 实际上point和经纬度都是地理位置类型，可以实现的场景类似。性能指标也可以用于参考。
 
-### 1 实时轨迹测试
+## 3.1 实时轨迹测试
 
 模拟快递员实时的上传轨迹，实时的更新快递员的最新位置。
 
 pgbench的测试脚本如下
 
-```
+```plsql
 vi test.sql  
   
 \set uid random(1,1000000)  
@@ -286,15 +286,15 @@ insert into cainiao_0_2 values (:uid, point(:x,:y), now()::date, now()::time);
 
 开始测试，持续300秒。
 
-```
+```plsql
 numactl --physcpubind=0-31 pgbench -M prepared -n -r -P 1 -f ./test.sql -c 32 -j 32 -T 300  
 ```
 
-#### 测试结果
+### 3.1.1 测试结果
 
 每秒写入17.4万，单次请求延迟0.18毫秒。
 
-```
+```plsql
 transaction type: ./test.sql  
 scaling factor: 1  
 query mode: prepared  
@@ -314,7 +314,7 @@ script statistics:
          0.182  insert into cainiao_0_2 values (:uid, point(:x,:y), now()::date, now()::time);  
 ```
 
-### 2 召回快递员测试
+## 3.2 召回快递员测试
 
 比如当日件达到一定数量、或者到达一定时间点时，需要召回附近的快递员取件。
 
@@ -326,7 +326,7 @@ script statistics:
 
 SQL样例
 
-```
+```plsql
 postgres=# explain (analyze,verbose,timing,costs,buffers) select * from cainiao_trace_realtime where circle '((0,0),20000)' @> pos order by pos <-> point '(0,0)' limit 100;  
                                                                                  QUERY PLAN                                                                                    
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
@@ -345,7 +345,7 @@ postgres=# explain (analyze,verbose,timing,costs,buffers) select * from cainiao_
 
 pgbench的测试脚本如下
 
-```
+```plsql
 vi test1.sql  
   
 \set x random(-500000,500000)  
@@ -355,15 +355,15 @@ select * from cainiao_trace_realtime where circle(point(:x,:y),20000) @> pos ord
 
 开始测试，持续300秒。
 
-```
+```plsql
 numactl --physcpubind=32-63 pgbench -M prepared -n -r -P 1 -f ./test1.sql -c 32 -j 32 -T 300  
 ```
 
-#### 测试结果
+### 3.3.1 测试结果
 
 每秒处理召回请求 6万，单次请求延迟0.53毫秒。
 
-```
+```plsql
 transaction type: ./test1.sql  
 scaling factor: 1  
 query mode: prepared  
@@ -384,7 +384,7 @@ script statistics:
 
 备注，如果只召回一名快递员，可以达到28万 tps.
 
-```
+```plsql
 transaction type: ./test1.sql
 scaling factor: 1
 query mode: prepared
@@ -403,17 +403,17 @@ script statistics:
          0.112  select * from cainiao_trace_realtime where circle(point(:x,:y),20000) @> pos order by pos <-> point(:x,:y) limit 1;
 ```
 
-### 3 混合测试
+## 3.3 混合测试
 
 同时压测快递员轨迹插入、随机召回快递员。
 
-#### 压测结果
+### 3.3.1 压测结果
 
 插入TPS: 12.5万，响应时间0.25毫秒
 
 查询TPS: 2.17万，响应时间1.47毫秒
 
-```
+```plsql
 transaction type: ./test.sql  
 scaling factor: 1  
 query mode: prepared  
@@ -450,7 +450,7 @@ script statistics:
          1.469  select * from cainiao_trace_realtime where circle(point(:x,:y),20000) @> pos order by pos <-> point(:x,:y) limit 100;  
 ```
 
-## 快递员实时位置表剥离
+# 四、快递员实时位置表剥离
 
 如果要尽量的降低RT，快递员实时位置表可以与轨迹明细表剥离，由应用程序来更新快递员的实时位置。
 
@@ -468,7 +468,7 @@ script statistics:
 
 pgbench脚本，更新快递员位置，查询某个随机点的最近100个快递员。
 
-```
+```plsql
 postgres=# \d cainiao_trace_realtime
                  Table "public.cainiao_trace_realtime"
   Column  |           Type            | Collation | Nullable | Default 
@@ -501,9 +501,9 @@ vi test2.sql
 select * from cainiao_trace_realtime where circle(point(:x,:y),20000) @> pos order by pos <-> point(:x,:y) limit 100;
 ```
 
-### 压测结果1(更新 18万/s, 响应时间0.17毫秒)
+## 4.1 压测结果1(更新 18万/s, 响应时间0.17毫秒)
 
-```
+```plsql
 numactl --physcpubind=0-31 pgbench -M prepared -n -r -P 1 -f ./test1.sql -c 32 -j 32 -T 300
 
 transaction type: ./test1.sql
@@ -525,9 +525,9 @@ script statistics:
          0.175  insert into cainiao_trace_realtime (uid,pos) values (:uid, point(:x,:y)) on conflict (uid) do update set pos=excluded.pos;
 ```
 
-### 压测结果2(查询 5.2万/s, 响应时间0.61毫秒)
+## 4.2 压测结果2(查询 5.2万/s, 响应时间0.61毫秒)
 
-```
+```plsql
 numactl --physcpubind=0-31 pgbench -M prepared -n -r -P 1 -f ./test2.sql -c 32 -j 32 -T 100
 
 transaction type: ./test2.sql
@@ -548,9 +548,9 @@ script statistics:
          0.614  select * from cainiao_trace_realtime where circle(point(:x,:y),20000) @> pos order by pos <-> point(:x,:y) limit 100;
 ```
 
-### 压测结果3(更新13万/s, 响应时间0.24毫秒 + 查询1.8万/s, 响应时间1.78毫秒)
+## 4.3 压测结果3(更新13万/s, 响应时间0.24毫秒 + 查询1.8万/s, 响应时间1.78毫秒)
 
-```
+```plsql
 numactl --physcpubind=0-31 pgbench -M prepared -n -r -P 1 -f ./test1.sql -c 32 -j 32 -T 100
 transaction type: ./test1.sql
 scaling factor: 1
@@ -589,7 +589,7 @@ script statistics:
          1.784  select * from cainiao_trace_realtime where circle(point(:x,:y),20000) @> pos order by pos <-> point(:x,:y) limit 100;
 ```
 
-## 历史轨迹进入OSS对象存储
+# 五、历史轨迹进入OSS对象存储
 
 前面对实时轨迹数据使用一周的分表，目的就是有时间可以将其写入到OSS，方便维护。
 
@@ -603,7 +603,7 @@ OSS对象存储。
 
 https://help.aliyun.com/document_detail/44461.html
 
-## 其他需求，轨迹合并设计
+# 六、其他需求，轨迹合并设计
 
 单个快递员，一天产生的轨迹是8640条。
 
@@ -615,7 +615,7 @@ PostgreSQL支持JSON、HSTORE(kv)、数组、复合数组 类型。每天将单�
 
 聚合例子
 
-```
+```plsql
 create type trace as (pos point, crt_time time);  
   
 create table cainiao_trace_agg (crt_date date, uid int, trace_arr trace[], primary key(crt_date,uid));  
@@ -628,7 +628,7 @@ select crt_date, uid, array_agg( (pos,crt_time)::trace ) from cainiao_0_2 group 
 
 聚合前(b-tree索引)，耗时8毫秒
 
-```
+```plsql
 postgres=# explain (analyze,verbose,timing,costs,buffers) select * from cainiao_0_2 where uid=340054;  
                                                            QUERY PLAN                                                             
 --------------------------------------------------------------------------------------------------------------------------------  
@@ -643,7 +643,7 @@ postgres=# explain (analyze,verbose,timing,costs,buffers) select * from cainiao_
 
 聚合后，耗时0.033毫秒
 
-```
+```plsql
 postgres=# explain (analyze,verbose,timing,costs,buffers) select * from cainiao_trace_agg where crt_date='2017-04-18' and uid=340054;  
                                                                     QUERY PLAN                                                                       
 ---------------------------------------------------------------------------------------------------------------------------------------------------  
@@ -656,7 +656,7 @@ postgres=# explain (analyze,verbose,timing,costs,buffers) select * from cainiao_
 (6 rows)  
 ```
 
-## 小结
+# 小结
 
 1. 本文以物流轨迹系统为背景，对两个常见需求进行数据库的设计以及模型的压测：实时跟踪快递员轨迹，实时召回附近的快递员。
 
