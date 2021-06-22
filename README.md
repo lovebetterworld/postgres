@@ -1,3 +1,7 @@
+PostgreSQL学习仓库：https://gitee.com/AiShiYuShiJiePingXing/postgres
+
+
+
 # 一、仓库说明
 
 本来是想直接同步德哥的pg仓库，但是奈何德哥的仓库太大了，都无法直接从GitHub迁移到gitee。但是看到德哥的许多笔记十分有用，于是花了很久时间，把德哥的笔记都过了两遍。
@@ -7,8 +11,6 @@
 第二遍，发现笔记太过于混乱，不太好明确的找到相应的内容，遂自己做了一个简单的目录。
 
 同时，也将该仓库作为自己学习和研究PostgreSQL的仓库，会不断积累和分享有关PostgreSQL的内容。
-
-
 
 德哥PostgreSQL仓库地址：https://github.com/digoal/blog
 
@@ -174,31 +176,199 @@ digoal(德哥)
 
 PostgreSQL Greenplum 培训视频分享：http://pan.baidu.com/s/1pKVCgHX   
 
-# 三、学习资料
+# 三、PostgreSQL资料(持续更新)
 
-[1.PostgreSQL 学习系列](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97)
+## 3.1 PostgreSQL学习系列
 
-[2.PostgreSQL 优势](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/2.PostgreSQL%20%E4%BC%98%E5%8A%BF)
+### 3.1.1 不睡觉的怪叔叔的PostGIS教程
 
-[3.PostgreSQL 笔记](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/3.PostgreSQL%20%E7%AC%94%E8%AE%B0)
+1. [PostGIS介绍](https://blog.csdn.net/qq_35732147/article/details/85158177)
 
-[4.PostgreSQL 课程](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/4.PostgreSQL%20%E8%AF%BE%E7%A8%8B)
+2. [PostGIS安装](https://blog.csdn.net/qq_35732147/article/details/86299060)
 
-[5.PostgreSQL 案例](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/5.PostgreSQL%20%E6%A1%88%E4%BE%8B)
+3. [创建空间数据库](https://blog.csdn.net/qq_35732147/article/details/85226864)
 
-[6.PostgreSQL PostGIS GIST](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/6.PostgreSQL%20PostGIS%20GIST)
+4. [加载空间数据](https://blog.csdn.net/qq_35732147/article/details/85228444)
 
-[7.PostgreSQL 推荐系统](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/7.PostgreSQL%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F)
+5. [数据](https://blog.csdn.net/qq_35732147/article/details/85242296)
 
-[8.PostgreSQL 应用开发解决方案](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88)
+6. [简单的SQL语句](https://blog.csdn.net/qq_35732147/article/details/85243978)
 
-[9.PostgreSQL 插件](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/9.PostgreSQL%20%E6%8F%92%E4%BB%B6)
+7. [几何图形（Geometry）](https://blog.csdn.net/qq_35732147/article/details/85258273)
 
-[10.PostgreSQL 配置文件](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/10.PostgreSQL%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+8. [关于几何图形的练习](https://blog.csdn.net/qq_35732147/article/details/85338695)
 
-[11.PostgreSQL PDF资料文档](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/11.PostgreSQL%20PDF%E8%B5%84%E6%96%99%E6%96%87%E6%A1%A3)
+9. [空间关系](https://blog.csdn.net/qq_35732147/article/details/85615057)
 
-[12.PostgreSQL 安装与部署](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/12.PostgreSQL%20%E5%AE%89%E8%A3%85%E4%B8%8E%E9%83%A8%E7%BD%B2)
+10. [空间连接](https://blog.csdn.net/qq_35732147/article/details/85676670)
+
+11. [空间索引](https://blog.csdn.net/qq_35732147/article/details/86212840)
+
+12. [投影数据](https://blog.csdn.net/qq_35732147/article/details/86301242)
+
+13. [地理](https://blog.csdn.net/qq_35732147/article/details/86489918)
+
+14. [几何图形创建函数](https://blog.csdn.net/qq_35732147/article/details/86576507)
+
+15. [更多的空间连接](https://blog.csdn.net/qq_35732147/article/details/86606486)
+
+16. [有效性](https://blog.csdn.net/qq_35732147/article/details/86620358)
+
+17. [相等](https://blog.csdn.net/qq_35732147/article/details/87343551)
+
+18. [线性参考](https://blog.csdn.net/qq_35732147/article/details/87450027)
+
+19. [维数扩展的9交集模型](https://blog.csdn.net/qq_35732147/article/details/87709276)
+
+20. [索引集群](https://blog.csdn.net/qq_35732147/article/details/88048758)
+
+21. [3-D](https://blog.csdn.net/qq_35732147/article/details/88099418)
+
+22. [最近邻域搜索](https://blog.csdn.net/qq_35732147/article/details/88219928)
+
+### 3.1.2 菜鸟教程-PostgreSQL系列
+
+- [1.PostgreSQL 学习系列](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97)
+
+- [2.PostgreSQL 优势](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/2.PostgreSQL%20%E4%BC%98%E5%8A%BF)
+
+- [3.PostgreSQL 笔记](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/3.PostgreSQL%20%E7%AC%94%E8%AE%B0)
+
+- [4.PostgreSQL 课程](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/4.PostgreSQL%20%E8%AF%BE%E7%A8%8B)
+
+- [5.PostgreSQL 案例](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/5.PostgreSQL%20%E6%A1%88%E4%BE%8B)
+
+- [6.PostgreSQL PostGIS GIST](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/6.PostgreSQL%20PostGIS%20GIST)
+
+- [7.PostgreSQL 推荐系统](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/7.PostgreSQL%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F)
+
+- [8.PostgreSQL 应用开发解决方案](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88)
+
+- [9.PostgreSQL 插件](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/9.PostgreSQL%20%E6%8F%92%E4%BB%B6)
+
+- [10.PostgreSQL 配置文件](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/10.PostgreSQL%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+
+- [11.PostgreSQL PDF资料文档](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/11.PostgreSQL%20PDF%E8%B5%84%E6%96%99%E6%96%87%E6%A1%A3)
+
+- [12.PostgreSQL 安装与部署](https://gitee.com/AiShiYuShiJiePingXing/postgres/tree/master/12.PostgreSQL%20%E5%AE%89%E8%A3%85%E4%B8%8E%E9%83%A8%E7%BD%B2)
+
+- [13.PostgreSQL Alter,Truncate Table](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%97/13.PostgreSQL%20Alter,Truncate%20Table.md)
+
+- [14.PostgreSQL视图、事务、锁](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%97/14.PostgreSQL%E8%A7%86%E5%9B%BE%E3%80%81%E4%BA%8B%E5%8A%A1%E3%80%81%E9%94%81.md)
+
+- [15.PostgreSQL子查询，Auto Increment](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%97/15.PostgreSQL%E5%AD%90%E6%9F%A5%E8%AF%A2%EF%BC%8CAuto%20Increment.md)
+
+- [16.PostgreSQL权限Privileges](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%97/16.PostgreSQL%E6%9D%83%E9%99%90Privileges.md)
+
+- [17.PostgreSQL时间日期函数和操作符 ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%97/17.PostgreSQL%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B0%E5%92%8C%E6%93%8D%E4%BD%9C%E7%AC%A6%20.md)
+
+- [18.PostgreSQL常用函数](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%97/18.PostgreSQL%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0.md)
+
+- [19.PostgreSQL的模式、表、空间、用户间的关系](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E6%95%99%E7%A8%8B%E7%B3%BB%E5%88%97/19.PostgreSQL%E7%9A%84%E6%A8%A1%E5%BC%8F%E3%80%81%E8%A1%A8%E3%80%81%E7%A9%BA%E9%97%B4%E3%80%81%E7%94%A8%E6%88%B7%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB.md)
+
+## 3.2 PostgreSQL优势
+
+- [企业数据库选型规则](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/2.PostgreSQL%20%E4%BC%98%E5%8A%BF/%E4%BC%81%E4%B8%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%9E%8B%E8%A7%84%E5%88%99%20%20%20%20.md)
+
+- [为什么数据库选型和找对象一样重要](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/2.PostgreSQL%20%E4%BC%98%E5%8A%BF/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%9E%8B%E5%92%8C%E6%89%BE%E5%AF%B9%E8%B1%A1%E4%B8%80%E6%A0%B7%E9%87%8D%E8%A6%81.md)
+- [为什么选择开源数据库、如何选择、需要做哪些准备](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/2.PostgreSQL%20%E4%BC%98%E5%8A%BF/%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9%E5%BC%80%E6%BA%90%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%81%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E3%80%81%E9%9C%80%E8%A6%81%E5%81%9A%E5%93%AA%E4%BA%9B%E5%87%86%E5%A4%87.md)
+- [学生为什么应该学PG, PG与其他数据库有哪些独特性, 为什么PG是数据库的未来](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/2.PostgreSQL%20%E4%BC%98%E5%8A%BF/%E5%AD%A6%E7%94%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BA%94%E8%AF%A5%E5%AD%A6PG,%20PG%E4%B8%8E%E5%85%B6%E4%BB%96%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%89%E5%93%AA%E4%BA%9B%E7%8B%AC%E7%89%B9%E6%80%A7,%20%E4%B8%BA%E4%BB%80%E4%B9%88PG%E6%98%AF%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%9C%AA%E6%9D%A5%20%20.md)
+
+
+
+## 3.3 PostgreSQL笔记
+
+![image-20210622142532687](https://gitee.com/AiShiYuShiJiePingXing/img/raw/master/img/image-20210622142532687.png)
+
+## 3.4 PostgreSQL课程
+
+![image-20210622142624449](https://gitee.com/AiShiYuShiJiePingXing/img/raw/master/img/image-20210622142624449.png)
+
+## 3.5 PostgreSQL案例
+
+- [阿里云PostgreSQL案例精选1 - 实时精准营销、人群圈选 ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/5.PostgreSQL%20%E6%A1%88%E4%BE%8B/%E9%98%BF%E9%87%8C%E4%BA%91PostgreSQL%E6%A1%88%E4%BE%8B%E7%B2%BE%E9%80%891%20-%20%E5%AE%9E%E6%97%B6%E7%B2%BE%E5%87%86%E8%90%A5%E9%94%80%E3%80%81%E4%BA%BA%E7%BE%A4%E5%9C%88%E9%80%89%20.md)
+- [阿里云PostgreSQL案例精选2 - 图像识别、人脸识别、相似特征检索、相似人群圈选](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/5.PostgreSQL%20%E6%A1%88%E4%BE%8B/%E9%98%BF%E9%87%8C%E4%BA%91PostgreSQL%E6%A1%88%E4%BE%8B%E7%B2%BE%E9%80%892%20-%20%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB%E3%80%81%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB%E3%80%81%E7%9B%B8%E4%BC%BC%E7%89%B9%E5%BE%81%E6%A3%80%E7%B4%A2%E3%80%81%E7%9B%B8%E4%BC%BC%E4%BA%BA%E7%BE%A4%E5%9C%88%E9%80%89%20%20%20.md)
+- [PostgreSQL 物流轨迹系统数据库需求分析与设计 - 包裹侠实时跟踪与召回 ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/5.PostgreSQL%20%E6%A1%88%E4%BE%8B/PostgreSQL%20%E7%89%A9%E6%B5%81%E8%BD%A8%E8%BF%B9%E7%B3%BB%E7%BB%9F%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%BE%E8%AE%A1%20-%20%E5%8C%85%E8%A3%B9%E4%BE%A0%E5%AE%9E%E6%97%B6%E8%B7%9F%E8%B8%AA%E4%B8%8E%E5%8F%AC%E5%9B%9E%20.md)
+- [PostgreSQL数据库应用：基于GIS的实时车辆位置查询](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/5.PostgreSQL%20%E6%A1%88%E4%BE%8B/PostgreSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BA%94%E7%94%A8%EF%BC%9A%E5%9F%BA%E4%BA%8EGIS%E7%9A%84%E5%AE%9E%E6%97%B6%E8%BD%A6%E8%BE%86%E4%BD%8D%E7%BD%AE%E6%9F%A5%E8%AF%A2.md)
+
+## 3.6 PostgreSQL PostGIS GIST
+
+### 3.6.1 德哥PostGIS GIST相关笔记
+
+![image-20210622142902120](https://gitee.com/AiShiYuShiJiePingXing/img/raw/master/img/image-20210622142902120.png)
+
+- [基于PG与PostGIS搭建实时矢量瓦片服务](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/6.PostgreSQL%20PostGIS%20GIST/%E5%9F%BA%E4%BA%8EPG%E4%B8%8EPostGIS%E6%90%AD%E5%BB%BA%E5%AE%9E%E6%97%B6%E7%9F%A2%E9%87%8F%E7%93%A6%E7%89%87%E6%9C%8D%E5%8A%A1.md)
+- [PostGIS总结](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/6.PostgreSQL%20PostGIS%20GIST/PostGIS.md)
+- [PostgreSQL存储地理信息数据的注意点](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/6.PostgreSQL%20PostGIS%20GIST/PostgreSQL%E5%AD%98%E5%82%A8%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E7%82%B9.md)
+- [postgresql 创建gis空间数据库，shp数据入库](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/6.PostgreSQL%20PostGIS%20GIST/postgresql%20%E5%88%9B%E5%BB%BAgis%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8Cshp%E6%95%B0%E6%8D%AE%E5%85%A5%E5%BA%93.md)
+- [PostGIS基本使用](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/6.PostgreSQL%20PostGIS%20GIST/PostGIS%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8.md)
+
+## 3.7 PostgreSQL推荐系统
+
+- [社交、电商、游戏等 推荐系统 (相似推荐)](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/7.PostgreSQL%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E7%A4%BE%E4%BA%A4%E3%80%81%E7%94%B5%E5%95%86%E3%80%81%E6%B8%B8%E6%88%8F%E7%AD%89%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%20(%E7%9B%B8%E4%BC%BC%E6%8E%A8%E8%8D%90).md)
+- [推荐系统, 已阅读过滤, 大量CPU和IO浪费的优化思路2](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/7.PostgreSQL%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F,%20%E5%B7%B2%E9%98%85%E8%AF%BB%E8%BF%87%E6%BB%A4,%20%E5%A4%A7%E9%87%8FCPU%E5%92%8CIO%E6%B5%AA%E8%B4%B9%E7%9A%84%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF2.md)
+- [用户喜好推荐系统 - PostgreSQL 近似计算应用](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/7.PostgreSQL%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E7%94%A8%E6%88%B7%E5%96%9C%E5%A5%BD%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%20-%20PostgreSQL%20%E8%BF%91%E4%BC%BC%E8%AE%A1%E7%AE%97%E5%BA%94%E7%94%A8.md)
+- [PostgreSQL 推荐系统优化总计](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/7.PostgreSQL%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/PostgreSQL%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%E6%80%BB%E8%AE%A1.md)
+- [PostgreSQL 相似人群圈选，人群扩选，向量相似 使用实践 - cube  ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/7.PostgreSQL%20%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/PostgreSQL%20%E7%9B%B8%E4%BC%BC%E4%BA%BA%E7%BE%A4%E5%9C%88%E9%80%89%EF%BC%8C%E4%BA%BA%E7%BE%A4%E6%89%A9%E9%80%89%EF%BC%8C%E5%90%91%E9%87%8F%E7%9B%B8%E4%BC%BC%20%E4%BD%BF%E7%94%A8%E5%AE%9E%E8%B7%B5%20-%20cube%20%20.md)
+
+## 3.8 PostgreSQL应用开发解决方案
+
+- [PostgreSQL 应用开发解决方案最佳实践系列课程 - 1. 中文分词与模糊查询  ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97%E8%AF%BE%E7%A8%8B%20-%201.%20%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2%20%20.md)
+- [PostgreSQL 应用开发解决方案最佳实践系列课程 - 2. 短视频业务实时推荐    ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97%E8%AF%BE%E7%A8%8B%20-%202.%20%E7%9F%AD%E8%A7%86%E9%A2%91%E4%B8%9A%E5%8A%A1%E5%AE%9E%E6%97%B6%E6%8E%A8%E8%8D%90%20%20%20%20.md)
+- [PostgreSQL 应用开发解决方案最佳实践系列课程 - 3. 人脸识别和向量相似搜索      ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97%E8%AF%BE%E7%A8%8B%20-%203.%20%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB%E5%92%8C%E5%90%91%E9%87%8F%E7%9B%B8%E4%BC%BC%E6%90%9C%E7%B4%A2%20%20%20%20%20%20.md)
+- [PostgreSQL 应用开发解决方案最佳实践系列课程 - 4. 出行相关调度系统     ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97%E8%AF%BE%E7%A8%8B%20-%204.%20%E5%87%BA%E8%A1%8C%E7%9B%B8%E5%85%B3%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%20%20%20%20%20.md)
+- [PostgreSQL 应用开发解决方案最佳实践系列课程 - 5. 配送相关调度系统    ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97%E8%AF%BE%E7%A8%8B%20-%205.%20%E9%85%8D%E9%80%81%E7%9B%B8%E5%85%B3%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%20%20%20%20.md)
+- [PostgreSQL 应用开发解决方案最佳实践系列课程 - 6. 时空、时态、时序、日志等轨迹系统](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97%E8%AF%BE%E7%A8%8B%20-%206.%20%E6%97%B6%E7%A9%BA%E3%80%81%E6%97%B6%E6%80%81%E3%80%81%E6%97%B6%E5%BA%8F%E3%80%81%E6%97%A5%E5%BF%97%E7%AD%89%E8%BD%A8%E8%BF%B9%E7%B3%BB%E7%BB%9F.md)
+- [PostgreSQL 应用开发解决方案最佳实践系列课程 - 8. 树状图谱关系系统](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97%E8%AF%BE%E7%A8%8B%20-%208.%20%E6%A0%91%E7%8A%B6%E5%9B%BE%E8%B0%B1%E5%85%B3%E7%B3%BB%E7%B3%BB%E7%BB%9F.md)
+- [PostgreSQL 应用开发解决方案最佳实践系列课程 - 9. 数据存储冷热分离   ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/8.PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/PostgreSQL%20%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E7%B3%BB%E5%88%97%E8%AF%BE%E7%A8%8B%20-%209.%20%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%86%B7%E7%83%AD%E5%88%86%E7%A6%BB%20%20%20.md)
+
+
+
+## 3.9 PostgreSQL插件与工具
+
+- [PostgreSQL 用户最喜爱的扩展插件功能  ](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/9.PostgreSQL%20%E6%8F%92%E4%BB%B6%E4%B8%8E%E5%B7%A5%E5%85%B7/PostgreSQL%20%E7%94%A8%E6%88%B7%E6%9C%80%E5%96%9C%E7%88%B1%E7%9A%84%E6%89%A9%E5%B1%95%E6%8F%92%E4%BB%B6%E5%8A%9F%E8%83%BD%20%20.md)
+- [PostgreSQL 有价值的插件、可改进功能](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/9.PostgreSQL%20%E6%8F%92%E4%BB%B6%E4%B8%8E%E5%B7%A5%E5%85%B7/PostgreSQL%20%E6%9C%89%E4%BB%B7%E5%80%BC%E7%9A%84%E6%8F%92%E4%BB%B6%E3%80%81%E5%8F%AF%E6%94%B9%E8%BF%9B%E5%8A%9F%E8%83%BD.md)
+- [PostgreSQL 最常用的插件](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/9.PostgreSQL%20%E6%8F%92%E4%BB%B6%E4%B8%8E%E5%B7%A5%E5%85%B7/PostgreSQL%20%E6%9C%80%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8F%92%E4%BB%B6.md)
+- [PostgreSQL工具](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/9.PostgreSQL%20%E6%8F%92%E4%BB%B6%E4%B8%8E%E5%B7%A5%E5%85%B7/PostgreSQL%E5%B7%A5%E5%85%B7.md)
+
+## 3.10 PostgreSQL配置文件
+
+- [PostgreSQL 11 postgresql.conf 参数模板](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/10.PostgreSQL%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/PostgreSQL%2011%20postgresql.conf%20%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF.md)
+
+
+
+## 3.11 PostgreSQL PDF资料及文档
+
+- PG的社会价值.pdf
+- PostgreSQL思维导图
+- 开发者PG TOP18问.pdf
+
+
+
+## 3.12 PostgreSQL安装与部署
+
+- [Linux中PostgreSQL和PostGIS的安装和使用](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/12.PostgreSQL%20%E5%AE%89%E8%A3%85%E4%B8%8E%E9%83%A8%E7%BD%B2/Linux%E4%B8%ADPostgreSQL%E5%92%8CPostGIS%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8.md)
+- [PostgreSQL+PostGIS安装部署](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/12.PostgreSQL%20%E5%AE%89%E8%A3%85%E4%B8%8E%E9%83%A8%E7%BD%B2/PostgreSQL+PostGIS%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2.md)
+- [PostgreSQL的Docker安装与部署](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/12.PostgreSQL%20%E5%AE%89%E8%A3%85%E4%B8%8E%E9%83%A8%E7%BD%B2/PostgreSQL%E7%9A%84Docker%E5%AE%89%E8%A3%85%E4%B8%8E%E9%83%A8%E7%BD%B2.md)
+
+
+
+## 3.13 PostgreSQL开发与使用
+
+### 3.13.1 PostgreSQL规范
+
+- [1.PostgreSQL 命名规范](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/13.PostgreSQL%20%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BD%BF%E7%94%A8/PostgreSQL%E8%A7%84%E8%8C%83/1.PostgreSQL%20%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83.md)
+- [2.PostgreSQL 设计规范](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/13.PostgreSQL%20%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BD%BF%E7%94%A8/PostgreSQL%E8%A7%84%E8%8C%83/2.PostgreSQL%20%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83.md)
+- [3.PostgreSQL QUERY规范](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/13.PostgreSQL%20%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BD%BF%E7%94%A8/PostgreSQL%E8%A7%84%E8%8C%83/3.PostgreSQL%20QUERY%E8%A7%84%E8%8C%83.md)
+- [4.PostgreSQL 管理规范](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/13.PostgreSQL%20%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BD%BF%E7%94%A8/PostgreSQL%E8%A7%84%E8%8C%83/4.PostgreSQL%20%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83.md)
+- [5.PostgreSQL 稳定性与性能规范](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/13.PostgreSQL%20%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BD%BF%E7%94%A8/PostgreSQL%E8%A7%84%E8%8C%83/5.PostgreSQL%20%E7%A8%B3%E5%AE%9A%E6%80%A7%E4%B8%8E%E6%80%A7%E8%83%BD%E8%A7%84%E8%8C%83.md)
+- [6.PostgreSQL 阿里云RDS PostgreSQL 使用规范](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/13.PostgreSQL%20%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BD%BF%E7%94%A8/PostgreSQL%E8%A7%84%E8%8C%83/6.PostgreSQL%20%E9%98%BF%E9%87%8C%E4%BA%91RDS%20PostgreSQL%20%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83.md)
+
+
+
+- [Geotools连接PostgreSQL数据库](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/13.PostgreSQL%20%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BD%BF%E7%94%A8/Geotools%E8%BF%9E%E6%8E%A5PostgreSQL%E6%95%B0%E6%8D%AE%E5%BA%93.md)
+- [PostgreSQL常用SQL](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/13.PostgreSQL%20%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BD%BF%E7%94%A8/PostgreSQL%E5%B8%B8%E7%94%A8SQL.md)
+- [JDBC与PostgreSQL（一）](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/13.PostgreSQL%20%E5%BC%80%E5%8F%91%E4%B8%8E%E4%BD%BF%E7%94%A8/JDBC%E4%B8%8EPostgreSQL%EF%BC%88%E4%B8%80%EF%BC%89.md)
 
 
 
