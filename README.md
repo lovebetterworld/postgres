@@ -182,49 +182,49 @@ PostgreSQL Greenplum 培训视频分享：http://pan.baidu.com/s/1pKVCgHX
 
 ### 3.1.1 不睡觉的怪叔叔的PostGIS教程
 
-1. [PostGIS介绍](https://blog.csdn.net/qq_35732147/article/details/85158177)
+1. [PostGIS介绍](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/1.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9APostGIS%E4%BB%8B%E7%BB%8D.md)
 
-2. [PostGIS安装](https://blog.csdn.net/qq_35732147/article/details/86299060)
+2. [PostGIS安装](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/2.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9APostGIS%E7%9A%84%E5%AE%89%E8%A3%85.md)
 
-3. [创建空间数据库](https://blog.csdn.net/qq_35732147/article/details/85226864)
+3. [创建空间数据库](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/3.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E5%88%9B%E5%BB%BA%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E5%BA%93.md)
 
-4. [加载空间数据](https://blog.csdn.net/qq_35732147/article/details/85228444)
+4. [加载空间数据](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/4.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E5%8A%A0%E8%BD%BD%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE.md)
 
-5. [数据](https://blog.csdn.net/qq_35732147/article/details/85242296)
+5. [数据](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/5.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E6%95%B0%E6%8D%AE.md)
 
-6. [简单的SQL语句](https://blog.csdn.net/qq_35732147/article/details/85243978)
+6. [简单的SQL语句](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/6.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E7%AE%80%E5%8D%95%E7%9A%84SQL%E8%AF%AD%E5%8F%A5.md)
 
-7. [几何图形（Geometry）](https://blog.csdn.net/qq_35732147/article/details/85258273)
+7. [几何图形（Geometry）](s)
 
-8. [关于几何图形的练习](https://blog.csdn.net/qq_35732147/article/details/85338695)
+8. [关于几何图形的练习](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/8.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E5%85%B3%E4%BA%8E%E5%87%A0%E4%BD%95%E5%9B%BE%E5%BD%A2%E7%9A%84%E7%BB%83%E4%B9%A0.md)
 
-9. [空间关系](https://blog.csdn.net/qq_35732147/article/details/85615057)
+9. [空间关系](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/9.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E7%A9%BA%E9%97%B4%E5%85%B3%E7%B3%BB.md)
 
-10. [空间连接](https://blog.csdn.net/qq_35732147/article/details/85676670)
+10. [空间连接](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/10.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E7%A9%BA%E9%97%B4%E8%BF%9E%E6%8E%A5.md)
 
-11. [空间索引](https://blog.csdn.net/qq_35732147/article/details/86212840)
+11. [空间索引](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/11.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E7%A9%BA%E9%97%B4%E7%B4%A2%E5%BC%95.md)
 
-12. [投影数据](https://blog.csdn.net/qq_35732147/article/details/86301242)
+12. [投影数据](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/12.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E6%8A%95%E5%BD%B1%E6%95%B0%E6%8D%AE.md)
 
-13. [地理](https://blog.csdn.net/qq_35732147/article/details/86489918)
+13. [地理](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/13.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E5%9C%B0%E7%90%86.md)
 
-14. [几何图形创建函数](https://blog.csdn.net/qq_35732147/article/details/86576507)
+14. [几何图形创建函数](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/14.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E5%87%A0%E4%BD%95%E5%9B%BE%E5%BD%A2%E5%88%9B%E5%BB%BA%E5%87%BD%E6%95%B0.md)
 
-15. [更多的空间连接](https://blog.csdn.net/qq_35732147/article/details/86606486)
+15. [更多的空间连接](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/15.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E6%9B%B4%E5%A4%9A%E7%9A%84%E7%A9%BA%E9%97%B4%E8%BF%9E%E6%8E%A5.md)
 
-16. [有效性](https://blog.csdn.net/qq_35732147/article/details/86620358)
+16. [有效性](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/16.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E5%87%A0%E4%BD%95%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%9C%89%E6%95%88%E6%80%A7.md)
 
-17. [相等](https://blog.csdn.net/qq_35732147/article/details/87343551)
+17. [相等](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/17.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E7%9B%B8%E7%AD%89.md)
 
-18. [线性参考](https://blog.csdn.net/qq_35732147/article/details/87450027)
+18. [线性参考](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/18.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E7%BA%BF%E6%80%A7%E5%8F%82%E8%80%83.md)
 
-19. [维数扩展的9交集模型](https://blog.csdn.net/qq_35732147/article/details/87709276)
+19. [维数扩展的9交集模型](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/19.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E7%BB%B4%E6%95%B0%E6%89%A9%E5%B1%95%E7%9A%849%E4%BA%A4%E9%9B%86%E6%A8%A1%E5%9E%8B.md)
 
-20. [索引集群](https://blog.csdn.net/qq_35732147/article/details/88048758)
+20. [索引集群](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/20.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E7%B4%A2%E5%BC%95%E9%9B%86%E7%BE%A4.md)
 
-21. [3-D](https://blog.csdn.net/qq_35732147/article/details/88099418)
+21. [3-D](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/21.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A3-D.md)
 
-22. [最近邻域搜索](https://blog.csdn.net/qq_35732147/article/details/88219928)
+22. [最近邻域搜索](https://gitee.com/AiShiYuShiJiePingXing/postgres/blob/master/1.PostgreSQL%20%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/%E4%B8%8D%E7%9D%A1%E8%A7%89%E7%9A%84%E6%80%AA%E5%8F%94%E5%8F%94PostGIS%E6%95%99%E7%A8%8B/22.PostGIS%E6%95%99%E7%A8%8B%EF%BC%9A%E6%9C%80%E8%BF%91%E9%82%BB%E5%9F%9F%E6%90%9C%E7%B4%A2.md)
 
 ### 3.1.2 菜鸟教程-PostgreSQL系列
 
