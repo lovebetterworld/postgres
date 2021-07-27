@@ -1,35 +1,35 @@
 ## PostgreSQL OpenStreeMap PBF 地理数据文件外部表 , 支持 NODE, WAY, RELATION 类型, GIS地理信息,地图类数据应用  
-  
+
 ### 作者  
 digoal  
-  
+
 ### 日期  
 2021-02-25  
-  
+
 ### 标签  
 PostgreSQL , Oracle , 术语 , 概念  
-  
-----  
-  
+
+----
+
 ## 背景  
 使用外部表模块osm_fdw 导入Openstreetmap PBF   
-  
+
 https://pgxn.org/dist/osm_fdw/4.1.1/  
-  
+
 https://github.com/vpikulik/postgres_osm_pbf_fdw/blob/master/doc/osm_fdw.md  
-  
+
 # OSM PBF Foreign Data Wrapper  
-  
+
 ## Synopsis  
-  
+
 Openstreetmap PBF foreign data wrapper for PostgreSQL  
-  
+
 ## Description  
-  
+
 This extension for PostgreSQL implements [Foreign Data Wrapper](https://wiki.postgresql.org/wiki/Foreign_data_wrappers "Openstreetmap pbf foreign data wrapper") (FDW) for reading [Openstreetmap PBF](http://wiki.openstreetmap.org/wiki/PBF_Format "Openstreetmap PBF") file format (*.osm.pbf)  
-  
+
 ## Usage  
-  
+
 Example:  
 ```sql  
 CREATE EXTENSION osm_fdw;  
@@ -38,22 +38,22 @@ CREATE SERVER osm_fdw_server FOREIGN DATA WRAPPER osm_fdw;
 SELECT create_osm_table('osm_malta', 'osm_fdw_server', '/path_to_file/malta-latest.osm.pbf');  
 -- count all nodes  
 SELECT count(*) FROM osm_malta WHERE type='NODE';  
-```  
-  
+```
+
 Find more examples here: [examples](https://github.com/vpikulik/postgres_osm_pbf_fdw/tree/master/ "Openstreetmap foreign data wrapper examples")  
-  
+
 ## How to use  
-  
+
 Create extension at first:  
 ```sql  
 CREATE EXTENSION osm_fdw;  
-```  
-  
+```
+
 To access foreign data, you need to create a [foreign server object](http://www.postgresql.org/docs/10/static/ddl-foreign-data.html "Postgresql foreign server object"):  
 ```sql  
 CREATE SERVER osm_fdw_server FOREIGN DATA WRAPPER osm_fdw;  
-```  
-  
+```
+
 Then create [foreign table](http://www.postgresql.org/docs/10/static/sql-createforeigntable.html).   
 There are two options: `CREATE FOREIGN TABLE` query and `create_osm_table` function.  
 I would strongly recommend to use second method.  
@@ -61,16 +61,16 @@ The function `create_osm_table(text, text, text)` is provided together with this
 It requires 3 parameters: name of the table, name of the foreign server object and a path to *.osm.pbf file.  
 ```sql  
 SELECT create_osm_table('table_name', 'osm_fdw_server', '/path_to_file/file.osm.pbf');  
-```  
-  
+```
+
 FDW reads the file with every query.  
 The right approach is to copy data to postgresql table or [materialized view](http://www.postgresql.org/docs/10/static/rules-materializedviews.html "Postgresql materialized view"), create required indexes and query this table or view.  
 ```sql  
 CREATE MATERIALIZED VIEW osm_data AS SELECT * FROM osm_foreign_table WITH DATA;  
-```  
-  
+```
+
 ## Table structure  
-  
+
 Table should have this structure:  
 ```sql  
 CREATE FOREIGN TABLE table_name (  
@@ -93,12 +93,12 @@ SERVER osm_fdw_server
 OPTIONS (  
     filename '/path_to_file/file.osm.pbf'  
 );  
-```  
+```
 Fields can have other names, but position and types must be as in this example.  
-  
+
 ### Column types  
 The FDW can read 3 openstreetmap types: ([NODE](http://wiki.openstreetmap.org/wiki/Node "Node")), ([WAY](http://wiki.openstreetmap.org/wiki/Way "Way")) and ([RELATION](http://wiki.openstreetmap.org/wiki/Relation "Relation")).  
-  
+
     * `id` - OSM object id  
     * `type` - type of the object (Possible values: NODE, WAY, RELATION)  
     * `lat` - latitude (filled only for NODE)  
@@ -112,11 +112,12 @@ The FDW can read 3 openstreetmap types: ([NODE](http://wiki.openstreetmap.org/wi
     * `user_id` - id of the OSM user  
     * `username` - name of the OSM user  
     * `visible` - shows if object is visible  
+
   
-  
-  
+
+
 ## 用法举例  
-  
+
 ```  
 DROP MATERIALIZED VIEW IF EXISTS berlin_osm_data;  
 DROP FOREIGN TABLE IF EXISTS osm_berlin;  
@@ -159,27 +160,10 @@ CREATE INDEX berlin_osm_ft_index
   
   
 -- SELECT osm_link(id, type) FROM berlin_osm_search('mohrenstrasse');      
-```  
-  
+```
+
 ## 相关阅读  
 [《OSM(OpenStreetMap) poi、路网 数据导入 PostgreSQL》](../201801/20180118_01.md)    
 [《开放地图OpenStreetMap与PostGIS的三生三世十里桃花》](../201703/20170327_01.md)    
 [《如何建立GIS测试环境 - 将openstreetmap的样本数据导入PostgreSQL PostGIS库》](../201609/20160906_01.md)    
 [《路径规划应用 pgRouting 实践与开放地图导入 - Openstreetmap PBF》](../201508/20150813_03.md)    
-  
-  
-#### [PostgreSQL 许愿链接](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216")
-您的愿望将传达给PG kernel hacker、数据库厂商等, 帮助提高数据库产品质量和功能, 说不定下一个PG版本就有您提出的功能点. 针对非常好的提议，奖励限量版PG文化衫、纪念品、贴纸、PG热门书籍等，奖品丰富，快来许愿。[开不开森](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216").  
-  
-  
-#### [9.9元购买3个月阿里云RDS PostgreSQL实例](https://www.aliyun.com/database/postgresqlactivity "57258f76c37864c6e6d23383d05714ea")
-  
-  
-#### [PostgreSQL 解决方案集合](https://yq.aliyun.com/topic/118 "40cff096e9ed7122c512b35d8561d9c8")
-  
-  
-#### [德哥 / digoal's github - 公益是一辈子的事.](https://github.com/digoal/blog/blob/master/README.md "22709685feb7cab07d30f30387f0a9ae")
-  
-  
-![digoal's wechat](../pic/digoal_weixin.jpg "f7ad92eeba24523fd47a6e1a0e691b59")
-  

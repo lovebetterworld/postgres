@@ -1,6 +1,4 @@
-
-
-# 【postgis】添加geometry类型字段
+# postgis添加geometry类型字段
 
 创建一张测试表
 

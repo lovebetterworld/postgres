@@ -1,31 +1,31 @@
 ## 重新发现PostgreSQL之美 - 6 index链表跳跳糖 (CTE recursive 递归的详细用例)  
-  
+
 ### 作者  
 digoal  
-  
+
 ### 日期  
 2021-05-29   
-  
+
 ### 标签  
 PostgreSQL , cte , 递归   
-  
-----  
-  
+
+----
+
 ## 背景  
 CTE 递归语法是PG 8.4引入的功能, 至今已经10多年, 非常文档.  
-  
+
 CTE 递归可以解决很多问题: 时序场景取所有传感器最新的value, 图式数据的搜索(一度人脉,N度人脉,最近的路径关系), 树状数据的累加分析, 知识图谱, 去稀疏数据的唯一值等.  
-  
+
 使用CTE递归比通用的方法通常有数百倍的性能提升.  
-  
+
 ## 用例  
 假设传感器有1万个, 每个传感器每秒上传一条记录.   
 取出今天处于活跃状态(有数据)的传感器的最后一个值.   
-  
-  
+
+
 1、创建测试表  
-  
-```  
+
+```  plsql
 create unlogged table tbl_sensor_log (  
   id serial8 ,     
   sid int, -- 传感器ID (例如 网约车、警车、巡逻车、共享单车、物联网传感器等设备)  
@@ -34,11 +34,11 @@ create unlogged table tbl_sensor_log (
 )  
 partition by range (crt_time)  
 ;   
-```  
-  
+```
+
 2、创建分区  
-  
-```  
+
+```  plsql
 do language plpgsql $$  
 declare  
 begin  
@@ -50,27 +50,27 @@ begin
   end loop;  
 end;  
 $$;  
-```  
-  
+```
+
 3、创建索引  
-  
-```  
+
+```  plsql
 create index idx_tbl_sensor_log_1 on tbl_sensor_log (sid,crt_time desc);  
-```  
-  
+```
+
 4、写入5000万条记录, 均匀分布在最近3天的分区内  
-  
-```  
+
+```  plsql
 insert into tbl_sensor_log (sid, val, crt_time)  
   select random()*10000 , row_to_json(row(random(),random(),clock_timestamp())), current_date+(round(random()::numeric*72::numeric,2)||' hour')::interval  
 from generate_series(1,50000000);  
-```  
-  
+```
+
 取出今天处于活跃状态(有数据)的传感器的最后一个值.   
-  
+
 方法1: 使用传统的窗口查询  
-  
-```  
+
+```  plsql
 select id,sid,val,crt_time from   
 (  
 select *, row_number() over w as RN  
@@ -116,13 +116,13 @@ where rn=1;
  Planning Time: 39.511 ms  
  Execution Time: 104088.128 ms  
 (11 rows)  
-```  
-  
+```
+
 方法2: 使用索引链表跳跳糖  
 递归, 每次扫描定位到1个目标SID, 然后跳到第二个SID, 而不是通过索引链表顺序扫描.   
 链表顺序扫描的缺点: 整张索引的时间范围内的所有叶子结点的每个page都要扫描到, 性能烂到家.   
-  
-```  
+
+```  plsql
 with recursive tmp as (  
 (select t from tbl_sensor_log as t where crt_time >= current_date and crt_time < current_date+1 order by sid, crt_time desc limit 1)  
 union all   
@@ -181,15 +181,15 @@ where tmp.* is not null;
  Planning Time: 69.016 ms  
  Execution Time: 125.866 ms  
 (24 rows)  
-```  
-  
-  
+```
+
+
 方法3: 使用subquery  
 但是, 需要维护一张SID表, 实际业务逻辑可能比这复杂, SID表可能没有这么好维护.   
 而且还有1个问题: 今天没有活跃的SID也会被查出来. 如果选择过滤今天不活跃的记录, 需要多次评估, 性能就会下降.    
-  
-  
-```  
+
+
+```  plsql
 create table tbl_sensor (sid int primary key);  
 insert into tbl_sensor select generate_series(0,10010);  
   
@@ -225,11 +225,11 @@ from tbl_sensor as t;
  Planning Time: 40.798 ms  
  Execution Time: 117.059 ms  
 (10 rows)  
-```  
-  
+```
+
 过滤不活跃的SID将增加计算量, 性能有下降.   
-  
-```  
+
+```  plsql
 select * from   
 (  
 select (select tbl_sensor_log from tbl_sensor_log where sid=t.sid and crt_time >= current_date and crt_time < current_date+1 order by crt_time desc limit 1) as val  
@@ -259,10 +259,10 @@ where t1.val is not null;
  Planning Time: 68.114 ms  
  Execution Time: 174.239 ms  
 (18 rows)  
-```  
-  
+```
+
 ## 更多CTE的应用场景  
-  
+
 ##### 202103/20210320_02.md   [《PostgreSQL 14 preview - recovery 性能增强 - recovery_init_sync_method=syncfs - 解决表很多时, crash recovery 递归open所有file的性能问题 - 需Linux新内核支持》](../202103/20210320_02.md)    
 ##### 202102/20210201_03.md   [《PostgreSQL 14 preview - SQL标准增强, 递归(CTE)图式搜索增加广度优先、深度优先语法, 循环语法 - breadth- or depth-first search orders and detect cycles》](../202102/20210201_03.md)    
 ##### 202011/20201125_01.md   [《PostgreSQL 递归查询在分组合并中的用法》](../202011/20201125_01.md)    
@@ -287,20 +287,3 @@ where t1.val is not null;
 ##### 201210/20121009_01.md   [《递归优化CASE - group by & distinct tuning case : use WITH RECURSIVE and min() function》](../201210/20121009_01.md)    
 ##### 201209/20120914_01.md   [《递归优化CASE - performance tuning case :use cursor\trigger\recursive replace (group by and order by) REDUCE needed blockes scan》](../201209/20120914_01.md)    
 ##### 201105/20110527_01.md   [《PostgreSQL 树状数据存储与查询(非递归) - Use ltree extension deal tree-like data type》](../201105/20110527_01.md)    
-  
-  
-#### [PostgreSQL 许愿链接](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216")
-您的愿望将传达给PG kernel hacker、数据库厂商等, 帮助提高数据库产品质量和功能, 说不定下一个PG版本就有您提出的功能点. 针对非常好的提议，奖励限量版PG文化衫、纪念品、贴纸、PG热门书籍等，奖品丰富，快来许愿。[开不开森](https://github.com/digoal/blog/issues/76 "269ac3d1c492e938c0191101c7238216").  
-  
-  
-#### [9.9元购买3个月阿里云RDS PostgreSQL实例](https://www.aliyun.com/database/postgresqlactivity "57258f76c37864c6e6d23383d05714ea")
-  
-  
-#### [PostgreSQL 解决方案集合](https://yq.aliyun.com/topic/118 "40cff096e9ed7122c512b35d8561d9c8")
-  
-  
-#### [德哥 / digoal's github - 公益是一辈子的事.](https://github.com/digoal/blog/blob/master/README.md "22709685feb7cab07d30f30387f0a9ae")
-  
-  
-![digoal's wechat](../pic/digoal_weixin.jpg "f7ad92eeba24523fd47a6e1a0e691b59")
-  
