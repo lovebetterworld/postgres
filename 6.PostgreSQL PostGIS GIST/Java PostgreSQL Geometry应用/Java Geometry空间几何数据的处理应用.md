@@ -1,4 +1,4 @@
-# 一、Java Geometry空间几何数据的处理应用
+## 1 Java Geometry空间几何数据的处理应用
 
 - [Java Geometry空间几何数据的处理应用](https://www.jianshu.com/p/5e9c9131d75e?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation)
 
@@ -21,7 +21,7 @@ WKT可以表示的几何对象包括：点，线，多边形，TIN（[不规则�
 - POINT EMPTY
 - MULTIPOLYGON EMPTY
 
-# 二、向空间数据库插入数据
+## 2 向空间数据库插入数据
 
 ```plsql
 --GEOM是类型为Geometry的字段--
@@ -42,9 +42,9 @@ VALUES
 
 也就是说，将坐标转化为WKT文本，我们就可以插入空间数据。接下来我们要考虑的是如何产生WKT文本。
 
-# 三、使用Java创建Geometry对象
+## 3 使用Java创建Geometry对象
 
-## 3.1 常见Geometry的JavaAPI
+### 3.1 常见Geometry的JavaAPI
 
 wkt文本仅仅是一个字符串而已，直接将坐标点拼接成符合WKT格式的字符串不就可以了吗？
  道理是这个道理，要做好可就难了。
@@ -63,9 +63,7 @@ wkt文本仅仅是一个字符串而已，直接将坐标点拼接成符合WKT�
 Esri是Arcgis官方提供的javaSDK，可惜功能不多，甚至不能提供基本的空间计算功能。
  jts功能较为齐全，资料也相对丰富一点
 
-
-
-## 3.2 JTS的部分API使用方式
+### 3.2 JTS的部分API使用方式
 
 ```java
     @Test
@@ -114,11 +112,11 @@ Esri是Arcgis官方提供的javaSDK，可惜功能不多，甚至不能提供基
     }
 ```
 
-## 3.3 JTS中Geometry数据类型的子类
+### 3.3 JTS中Geometry数据类型的子类
 
 ![img](https://upload-images.jianshu.io/upload_images/10533664-cec5c278f4d0240d.png?imageMogr2/auto-orient/strip|imageView2/2/w/1173)
 
-# 四、使用JAVA向空间数据库新增数据
+## 4 使用JAVA向空间数据库新增数据
 
 根据上面测试类中Api的使用，让我们总结几个要点
 
@@ -136,9 +134,9 @@ Esri是Arcgis官方提供的javaSDK，可惜功能不多，甚至不能提供基
 环境：
  本例代码基于JTS、SpringBoot、Mybatis-Plus、mssql-jdbc环境
 
-# 五、使用`TypeHandler`映射自定义对象字段插入Geometry数据
+## 5 使用`TypeHandler`映射自定义对象字段插入Geometry数据
 
-## 5.1 自定义TypeHandler
+### 5.1 自定义TypeHandler
 
 当我们使用Mybatis框架时，Mybatis提供了自定义类型转换器TypeHandler实现特殊对象与Sql字段的映射关系
 
@@ -202,7 +200,7 @@ public class GeometryTypeHandler extends BaseTypeHandler<Geometry> {
 }
 ```
 
-## 5.2 实体对象
+### 5.2 实体对象
 
 实体对象如下：
 
@@ -224,7 +222,7 @@ public class Well extends MyGeometry implements Serializable {
 }
 ```
 
-## 5.3 自定义主键生成策略
+### 5.3 自定义主键生成策略
 
 在arcgis中，空间表中的主键字段为int，并且非自增，不能进行修改。当修改为自增时arcgis会出现一些错误。因此，java后台插入空间数据需要自己完成主键的查询生成。
  `IKeyGenerator`是Mybatis-Plus提供的接口。此实现的作用是，当指定这个主键生成策略时，mp框架将会在新增数据前调用此实现，将结果赋值给对象的ID（类似于Oracle的序列）
@@ -245,7 +243,7 @@ public class SqlServerKeyGenerator implements IKeyGenerator {
 }
 ```
 
-## 5.4 Geometry对象持久化
+### 5.4 Geometry对象持久化
 
 当我们调用mybatis-plus提供的方法持久化对象
 
@@ -278,7 +276,7 @@ public class SqlServerKeyGenerator implements IKeyGenerator {
  {executed in 17 msec}
 ```
 
-# 六、手写xml插入Geometry数据
+## 6 手写xml插入Geometry数据
 
 使用SqlServer提供的函数`geometry :: STGeomFromText( #{wktText},4326)`将Geometry转换成WKT文本再进行插入
 
@@ -350,9 +348,9 @@ public class MyGeometry implements Serializable {
 }
 ```
 
-# 七、采坑记录
+## 7 采坑记录
 
-## 7.1 jts与sqlserver识别的wkt不兼容
+### 7.1 jts与sqlserver识别的wkt不兼容
 
 ```java
 [2019-07-01 16:40:20,637] [ERROR] [http-nio-8905-exec-5] jdbc.audit 111 7. PreparedStatement.execute() INSERT INTO [zhundergroundcableline].[dbo].[LINE_CORRIDOR] ( [Shape] ) values ( geometry :: STGeomFromText( 'POLYGON Z((113.5079365 22.24850034 

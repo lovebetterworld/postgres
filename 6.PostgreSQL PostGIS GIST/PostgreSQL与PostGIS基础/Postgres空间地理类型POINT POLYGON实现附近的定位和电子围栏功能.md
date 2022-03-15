@@ -2,13 +2,13 @@ Postgres空间地理类型POINT POLYGON实现附近的定位和电子围栏功�
 
 原文地址：https://cloud.tencent.com/developer/article/1379951
 
-# 一、需求和背景
+## 一、需求和背景
 
 在已有大量经纬度坐标点的情况下，给定一组经纬度如何快速定位到附近的POI有哪些？
 
 现在使用经纬度转geohash的算法，将二维的距离运算转换为like前缀匹配。通过比较9位到5位前缀，来获取附近5米到3km之内的坐标，为了寻求更快的定位方法，测试一下postgres的空间类型。
 
-# 二、安装插件postgis
+## 二、安装插件postgis
 
 先安装了pg-10, 并且是通过yum安装的。导入过repo.
 
@@ -52,13 +52,13 @@ CREATE EXTENSION postgis_topology;
 
 安装之后，public下会新增一个表spatial_ref_sys。
 
-# 三、点POINT类型和距离
+## 三、点POINT类型和距离
 
 点POINT类型的数据结构为`POINT(0 0)`，正好可以用作存储经纬度。
 
-## 3.1 表添加POINT类型
+### 3.1 表添加POINT类型
 
-### 1. AddGeometryColumn
+#### 1. AddGeometryColumn
 
 使用函数[AddGeometryColumn](https://postgis.net/docs/AddGeometryColumn.html), 命令行查看函数
 
@@ -66,7 +66,7 @@ CREATE EXTENSION postgis_topology;
 \df+  AddGeometryColumn
 ```
 
-### 2. Synopsis
+#### 2. Synopsis
 
 ```plsql
 text AddGeometryColumn(varchar table_name, varchar column_name, integer srid, varchar type, integer dimension, boolean use_typmod=true);
@@ -88,13 +88,13 @@ SELECT AddGeometryColumn ('poi', 'geom_point_26986', 26986, 'POINT', 2);
 - 4326  GCS_WGS_1984  World Geodetic System (WGS)
 - 26986  美国马萨诸塞州地方坐标系（区域坐标系） 投影坐标, 平面坐标
 
-## 3.2 直接添加
+### 3.2 直接添加
 
 ```plsql
 ALTER TABLE poi ADD COLUMN geom_p_alter geometry(POINT,4326);
 ```
 
-## 3.3 添加空间索引
+### 3.3 添加空间索引
 
 ```plsql
 CREATE INDEX idx_point
@@ -102,7 +102,7 @@ ON poi
 USING gist(geom_point);
 ```
 
-## 3.4 插入点
+### 3.4 插入点
 
 使用函数将文本转换为几何类型: [ST_GeomFromText](https://postgis.net/docs/ST_GeomFromText.html)
 
@@ -180,7 +180,7 @@ longitude  | latitude  |          st_astext          |                st_astext
 
 其中，需要注意的是，使用pg的字符串拼接符号`||`，POINT经纬度之间要留空格。
 
-## 3.5 两个点之间的距离
+### 3.5 两个点之间的距离
 
 距离计算函数 [ST_Distance](https://postgis.net/docs/ST_Distance.html)
 
@@ -223,7 +223,7 @@ SELECT ST_Distance(ST_GeomFromText('POINT(114.017299 22.537126)',4326),
 
 关于单位是m的, 前三种的计算结果是正确的。最后一种坐标转换的计算方法， 参考[PostGIS 坐标转换(SRID)的边界问题引发的专业知识 - ST_Transform](https://github.com/digoal/blog/blob/master/201706/20170622_01.md) 建议国内不要使用马萨诸塞州的投影平面，会使得距离计算不够准确。
 
-## 3.6 附近5公里内的点
+### 3.6 附近5公里内的点
 
 使用函数[ST_DWithin](https://postgis.net/docs/ST_DWithin.html) 可以计算两个点之间的距离是否在5公里内。
 
@@ -262,7 +262,7 @@ WHERE
 
 通过指定类型`geom_point :: geography`，单位变成米, 否则默认距离单位是度。
 
-## 3.7 最近的10个点
+### 3.7 最近的10个点
 
 ```plsql
 SELECT * FROM s_poi_gaode_gps ORDER BY geom_point <-> ST_GeomFromText ( 'POINT(121.248642 31.380415)', 4326 )  LIMIT 10;
@@ -270,9 +270,9 @@ SELECT * FROM s_poi_gaode_gps ORDER BY geom_point <-> ST_GeomFromText ( 'POINT(1
 
 速度极快。
 
-# 四、面多边形'POLYGON'
+## 四、面多边形'POLYGON'
 
-## 4.1 添加字段类型
+### 4.1 添加字段类型
 
 ```bash
 SELECT AddGeometryColumn ('basic_mall_v1', 'geom_fence', 4326, 'POLYGON', 2);
@@ -288,7 +288,7 @@ ON basic_mall_v1
 USING gist(geom_fence);
 ```
 
-## 4.2 插入值
+### 4.2 插入值
 
 使用函数 ST_GeomFromText
 
@@ -344,7 +344,7 @@ UPDATE basic_mall_v1 SET geom_fence=
     , 4326)
 ```
 
-## 4.3 计算gps附近30m内的围栏
+### 4.3 计算gps附近30m内的围栏
 
 使用函数[ST_DWithin](https://postgis.net/docs/ST_DWithin.html) 判断一个几何对象是否在另一个的r距离以内：
 

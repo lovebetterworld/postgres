@@ -2,8 +2,6 @@
 
 原文地址：https://cloud.tencent.com/developer/article/1414516?from=article.detail.1379951
 
-
-
 关于PostgreSQL的一些官方学习资料如下，请参考：
 
 - https://www.postgresql.org/files/documentation/pdf/9.6/postgresql-9.6-A4.pdf

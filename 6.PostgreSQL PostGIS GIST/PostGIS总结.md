@@ -8,7 +8,7 @@
 - [PostGreSQL（十）PostGIS-最近领域搜索](https://www.cnblogs.com/yjh1995/p/13893384.html)
 - [PostGreSQL（十一）PostGIS-其他函数](https://www.cnblogs.com/yjh1995/p/13893398.html)
 
-# 一、PostGIS介绍
+## 1 PostGIS介绍
 
 **PostGIS**是一个**空间数据库**，**空间数据库像存储和操作数据库中其他任何对象一样去存储和操作空间对象**。
 
@@ -39,9 +39,7 @@ PostGIS的特点如下：
 - 空间聚集函数
 - 栅格数据类型
 
-
-
-## 1.1 空间数据类型
+### 1.1 空间数据类型
 
 - **空间数据类型**用于指定图形为**点**（point）、**线**（line）和**面**（polygon）
 
@@ -51,7 +49,7 @@ PostGIS的特点如下：
 
     在许多方面，**空间数据类型**可以简单的理解为**形状**（shape）
 
-## 1.2 空间索引和边界框
+### 1.2 空间索引和边界框
 
 - 多维度**空间索引**被用于进行空间操作的高效处理（注意是多维度哦，而不是只有针对二维空间数据的索引）
 
@@ -65,7 +63,7 @@ PostGIS的特点如下：
 
 - 各种数据库实际实现的**空间索引**差异很大，最常见的实现是[R-tree](https://link.zhihu.com/?target=http%3A//en.wikipedia.org/wiki/R-tree)（在PostGIS中使用），但在其他**空间数据库**中也有基于[四叉树](https://link.zhihu.com/?target=http%3A//en.wikipedia.org/wiki/Quadtree)（Quadtrees）的实现和[基于网格的索引](https://link.zhihu.com/?target=http%3A//en.wikipedia.org/wiki/Grid_(spatial_index))（grid-based indexes）的实现
 
-## 1.3 空间函数
+### 1.3 空间函数
 
 **空间函数**构建于SQL语言中，用于进行空间属性和空间关系的查询，**空间函数**中的大部分可以被归纳为以下五类：
 
@@ -75,25 +73,21 @@ PostGIS的特点如下：
 - 比较 —— 比较两种几何图形的空间关系的函数
 - 生成 —— 基于其他几何图形生成新图形的函数
 
- 
-
 参考：　　https://zhuanlan.zhihu.com/p/67232451
-
-
 
 - [空间数据存储](https://www.cnblogs.com/yjh1995/p/13893286.html)
 
-# 二、空间数据存储
+## 2 空间数据存储
 
 使用**geography**这种数据类型时，PostGIS的内部计算是基于**实际地球球体**来计算的；
 
 而使用**geometry**这种数据类型时，PostGIS的内部计算是**基于平面**来计算的。
 
-## 2.1 几何类型（Geometry Type）
+### 2.1 几何类型（Geometry Type）
 
 Geometry（几何对象类型）是PG的一个基本存储类型，PostGIS的空间数据都会以Geometry的形式存储在PostgreSQL里，本质是个二进制对象。
 
-### 2.1.1 OGC的WKB和WKT格式
+#### 2.1.1 OGC的WKB和WKT格式
 
 PostGIS基于OGC的“Simple Feature for Specification for SQL”规范，在Geometry对象上实现了一系列的GIS  Object（地物对象），使用了OGC推荐的WKT（Well-Known Text）和WKB（Well-Known  Binary）格式进行描述，大幅增加了易用性，例如WKT的7个基本类型：
 
@@ -114,17 +108,15 @@ PostGIS基于OGC的“Simple Feature for Specification for SQL”规范，在Geo
 几何集合：GEOMETRYCOLLECTION(POINT(2 3),LINESTRING(2 3,3 4))
 ```
 
-### 2.1.2 EWKT、EWKB和Canonical格式
+#### 2.1.2 EWKT、EWKB和Canonical格式
 
 PostGIS自身又在WKT和WKB基础上扩展实现了EWKT和EWKB来满足更复杂的场景需求，EWKT和EWKB相比OGC WKT和WKB格式主要的扩展有3DZ、3DM、4D坐标和内嵌空间参考支持。
 
-
-
-## 2.1.3 SQL-MM格式
+#### 2.1.3 SQL-MM格式
 
 SQL-MM格式定义了一些插值曲线，这些插值曲线和EWKT有点类似，也支持3DZ、3DM、4D坐标，但是不支持嵌入空间参考。
 
-## 2.2 地理类型（Geography Type）
+### 2.2 地理类型（Geography Type）
 
 地理类型提供支持本地空间特性的“地理”坐标(有时称为“大地”坐标,或“纬度/经度”,或“经度/纬度”)。它的几何基础是球面。
 
@@ -159,7 +151,7 @@ INSERT INTO global_points (name, location) VALUES
 ('London', ST_GeographyFromText('SRID=4326; POINT(-72.1235 42.3521)'));
 ```
 
-## 2.3 PostGIS对几何信息的检查
+### 2.3 PostGIS对几何信息的检查
 
 PostGIS可以检查几何信息的正确性，这主要是通过IsValid函数实现的。 以下语句分辨检查了2个几何对象的正确性，显然，(0, 0)点和(1,1)点可以构成一条线，但是(0, 0)点和(0, 0)点则不能构成，这个语句执行以后的得出的结果是TRUE,FALSE。
 
@@ -183,9 +175,9 @@ ERROR: new row for relation "cities" violates check constraint "geometry_valid"
 SQL 状态: 23514
 ```
 
-# 三、PostGIS中的常用函数
+## 3 PostGIS中的常用函数
 
-## 3.1 图形和地理位置
+### 3.1 图形和地理位置
 
 - **ST_GeometryType(geometry)** —— 返回几何图形的类型
 - **ST_Transform(geometry, srid)**——将几何图形投影为地理坐标数据 或 转换为不同srid坐标系统的坐标数据
@@ -227,7 +219,7 @@ PS : geometry，是几何类型的列的列名
 - **ST_Area(geometry)** —— 返回集合中所有多边形组成部分的总面积
 - **ST_Length(geometry)** —— 返回所有线段组成部分的总长度
 
-## 3.2 几何图形输入和输出
+### 3.2 几何图形输入和输出
 
 在数据库中，**几何图形**（Geometry）以仅供PostGIS使用的格式存储在磁盘上。为了让外部程序插入和检索有用的**几何图形**信息，需要将它们转换为其他应用程序可以理解的格式。
 
@@ -266,7 +258,7 @@ PS : geometry，是几何类型的列的列名
 
 请注意，除了具有**几何图**形表示形式的**文本**参数外，还可以指定一个提供几何图形**SRID**的数字参数。
 
-## 3.3 图形关系
+### 3.3 图形关系
 
 **ST_Equals(geometry A, geometry B)**
 
@@ -297,7 +289,7 @@ PS : geometry，是几何类型的列的列名
 - **ST_Distance(geometry A, geometry B)**计算两个几何图形之间的最短距离，并将其作为浮点数返回。这对于实际报告几何图形之间的距离非常有用
 - **ST_DWithin()**，测试两个几何图形之间的距离是否在某个范围之内，
 
-## 3.4 geography类型
+### 3.4 geography类型
 
 - **ST_AsText(geography)** returns `text`
 - **ST_GeographyFromText(text)** returns `geography`
@@ -321,7 +313,7 @@ PS : geometry，是几何类型的列的列名
 
 PostgreSQL的类型转换语法是将 **::typename** 附加到希望转换的值的末尾。因此，2::text将数字2转换为文本字符串"2"；'POINT(0 0)' :: geometry将点的文本表示形式转换为geometry点
 
-# 四、空间连接
+## 4 空间连接
 
 **空间连接**（spatial joins）是**空间数据库**的主要组成部分，它们允许你使用**空间关系**作为**连接键**（join key）来连接来自不同**数据表**的信息，如：
 
@@ -342,9 +334,9 @@ WHERE subways.name = 'Broad St';
 
 默认情况下，数据库使用的是**INNER JOIN**连接类型，还可以用 LEFT OUTER JOIN、RIGHT OUTER JOIN
 
-# 五、空间索引
+## 5 空间索引
 
-## 5.1 创建和使用索引
+### 5.1 创建和使用索引
 
 如下创建一个空间索引：
 
@@ -377,7 +369,7 @@ WHERE neighborhoods.name = 'West Village';
 - PostGIS中最常用的函数（ST_Contains、ST_Intersects、ST_DWithin等）都包含**自动索引过滤器**
 - 有些函数（如ST_Relate）不包括**索引过滤器**
 
-## 5.2 分析（ANALYZE）
+### 5.2 分析（ANALYZE）
 
 PostgreSQL查询规划器（query planner）智能地选择何时使用或不使用**空间索引**来计算查询。与直觉相反，执行**空间索引**搜索并不总是更快：如果搜索将返回表中的每条记录，则遍历索引树以获取每条记录实际上比从一开始线性读取整个表要慢（注意这句话）。
 
@@ -391,7 +383,7 @@ PostgreSQL查询规划器（query planner）智能地选择何时使用或不使
 ANALYZE nyc_census_blocks;
 ```
 
-## 5.3 清理（VACUUM）
+### 5.3 清理（VACUUM）
 
 值得强调的是，仅仅创建**空间索引**不足以让PostgreSQL有效地使用它。每当创建新索引或对表大量更新、插入或删除后，都必须执行**清理（VACUUMing）**。**VACUUM**命令要求PostgreSQL回收表页面中因记录的更新或删除而留下的任何未使用的空间。
 
@@ -405,31 +397,31 @@ ANALYZE nyc_census_blocks;
 VACUUM ANALYZE nyc_census_blocks;
 ```
 
-# 六、几何图形创建函数
+## 6 几何图形创建函数
 
-## 6.1 ST_Centroid / ST_PointOnSurface
+### 6.1 ST_Centroid / ST_PointOnSurface
 
 - **ST_Centroid(geometry)** —— 返回大约位于输入几何图形的**质心**上的点。这种简单的计算速度非常快，但有时并不可取，因为返回点不一定在要素本身上。如果输入的几何图形具有凸性（假设字母'C'），则返回的质心可能不在图形的内部。
 - **ST_PointOnSurface(geometry)** —— 返回保证在输入多边形内的点。从计算上讲，它比centroid操作代价要大得多。
 
-## 6.2 ST_Buffer
+### 6.2 ST_Buffer
 
 **ST_Buffer(geometry, distance)**接受几何图形和缓冲区距离作为参数，并输出一个多边形，这个多边形的边界与输入的几何图形之间的距离与输入的缓冲区距离相等。
 
-## 6.3 ST_Intersection
+### 6.3 ST_Intersection
 
 **叠置**（overlay）- 通过计算两个重叠多边形的**交集**来创建新的几何图形。
 
 **ST_Intersection(geometry A, geometry B)**函数返回两个参数共有的空间区域（或直线，或点）。如果参数不相交，该函数将返回一个空几何图形
 
-## 6.4 ST_Union
+### 6.4 ST_Union
 
 **ST_Union**将两个几何图形合并起来。ST_Union函数有两种形式
 
 - **ST_Union(geometry, geometry)** —— 接受两个几何图形参数并返回合并的并集。
 - **ST_Union([geometry])** —— 接受一组几何图形并返回全部几何图形的并集。ST_Union([geometry])可与GROUP BY语句一起使用，以创建经过细致合并的基本几何图形集。这种操作非常强大。
 
-# 七、图形有效性和简单性
+## 7 图形有效性和简单性
 
 - **ST_IsValid(geometry)**，检查图形有效性
 
@@ -447,31 +439,31 @@ VACUUM ANALYZE nyc_census_blocks;
 
   - 几何图形的**简单性**可以理解为几何图形比较简单整齐，不会自己与自己重叠，不繁杂
 
-## 7.1 点的简单性与有效性
+### 7.1 点的简单性与有效性
 
-### 7.1.1 单点
+#### 7.1.1 单点
 
 单个点（**Point**）肯定是简单的且有效的，因为一个点孤零零的肯定是简单、有效的
 
-### 7.1.2 多点
+#### 7.1.2 多点
 
 多个点（**MultiPoint**）肯定是有效的，但不一定是简单的。
 
 如果多点中有两个或两个以上的点**重合**（也就是坐标一致），那么它就**不是简单**的，但是确是**有效**的
 
-## 7.2 线串的简单性与有效性
+### 7.2 线串的简单性与有效性
 
-### 7.2.1 单线串
+#### 7.2.1 单线串
 
 单线串（LINESTRING）如果**有重叠、相交就不是简单**的（除了端点相交，端点相交就说明这条线串是闭合的，但它是简单的）
 
-### 7.2.2 多线串
+#### 7.2.2 多线串
 
 多线串（MULTILINESTRING）只要它的**元素（LINESTRING）都是简单**的，且**两个元素只在某个点相切**，那么它就是简单
 
-## 7.3 多边形的简单性与有效性
+### 7.3 多边形的简单性与有效性
 
-### 7.3.1 单多边形
+#### 7.3.1 单多边形
 
 有效性：
 
@@ -482,25 +474,25 @@ VACUUM ANALYZE nyc_census_blocks;
 
 多边形的环只要不自相交，则该多边形就是简单的
 
-### 7.3.2 多多边形
+#### 7.3.2 多多边形
 
 **多多边形里**只要各个**子元素（单多边形）是简单的、有效**的，而且**子元素之间只在有限的点上接触**，那么它就是简单的、有效的。
 
-# 八、几何图形的相等
+## 8 几何图形的相等
 
-## 8.1 精确相等（ST_OrderingEquals）
+### 8.1 精确相等（ST_OrderingEquals）
 
 精确相等是通过按顺序逐个比较两个**几何图形的顶点**来确定的，以确保它们在位置上是相同的。确定图形的点位置和顺序不同，则图形不等
 
-## 8.2 空间相等（ST_Equals）
+### 8.2 空间相等（ST_Equals）
 
 精确的相等并没有考虑到几何图形的空间性质。有一个名为**ST_Equals**的函数，可用于测试几何图形的空间相等性或等价性。无论是绘制多边形的方向、定义多边形的起点，还是使用的点的个数的差异在这里都不重要。重要的是多边形包含相同的**空间区域**。图形的**实际形状**相同，则图形相等
 
-## 8.3 等边界框（=）
+### 8.3 等边界框（=）
 
 在最坏的情况下，需要精确相等来比较几何图形中的每个顶点以确定相等。这可能会比较慢，并且可能不适合数量大的几何图形。为了更快地进行比较，提供了等边界运算符 ' **=** ' 。这仅在**边界框（矩形）**上操作，确保几何图形占用相同的二维范围，但不一定占用相同的空间。**边界框（矩形）**相同，则图形相等
 
-# 九、最近领域搜索
+## 9 最近领域搜索
 
 执行**最近邻域搜索**的简单方法是按与要查询的几何图形的距离对候选表进行排序，然后获取最小距离对应的表记录
 
@@ -514,9 +506,9 @@ ORDER BY ST_Distance(streets.geom, subways.geom) ASC
 LIMIT 1;
 ```
 
-# 十、其他函数
+## 10 其他函数
 
-## 10.1 创建空栅格函数
+### 10.1 创建空栅格函数
 
 **ST_MakeEmptyRaster**用于创建一个空的没有像元值的栅格（没有波段），各个参数用于定义这个空栅格的元数据：
 
@@ -534,7 +526,7 @@ LIMIT 1;
 - [ST_AddBand](https://link.zhihu.com/?target=http%3A//postgis.net/docs/manual-3.0/RT_ST_AddBand.html) —— 用于定义波段。
 - [ST_SetValue](https://link.zhihu.com/?target=http%3A//postgis.net/docs/manual-3.0/RT_ST_SetValue.html) —— 用于设置像元值
 
-## 10.2 矢量切片坐标转换函数
+### 10.2 矢量切片坐标转换函数
 
 **ST_AsMVTGeom**
 
@@ -550,7 +542,7 @@ LIMIT 1;
 - **buffer** —— 矢量坐标空间中缓冲区的距离，位于该缓冲区的几何图形部位根据clip_geom参数被裁剪或保留。如果为NULL，则默认为256。
 - **clip_geom** —— 用于选择位于缓冲区的几何图形部位是被裁剪还是原样保留。如果为NULL，则默认为true。
 
-## 10.3 生成矢量切片的函数
+### 10.3 生成矢量切片的函数
 
 ST_AsMVT聚合函数用于将基于[MapBox VectorTile](https://link.zhihu.com/?target=https%3A//www.mapbox.com/vector-tiles/)坐标空间的几何图形转换为[MapBox VectorTile](https://link.zhihu.com/?target=https%3A//www.mapbox.com/vector-tiles/)二进制矢量切片。
 

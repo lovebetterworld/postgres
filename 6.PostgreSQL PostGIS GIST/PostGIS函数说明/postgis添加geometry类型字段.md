@@ -1,4 +1,4 @@
-# 一、postgis添加geometry类型字段
+## 1 postgis添加geometry类型字段
 
 创建一张测试表
 
@@ -33,19 +33,19 @@ INSERT INTO test1 (id, the_geom, name) VALUES (3,ST_GeomFromText('POINT(27.91162
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200703152928560.png)
 
-# 二、Postgresql存储Geometry对象类型
+## 2 Postgresql存储Geometry对象类型
 
 - [Postgresql存储Geometry对象类型](https://www.bianchengquan.com/article/366575.html)
 
-## 2.1 查询Geometry
+### 2.1 查询Geometry
 
 ```sql
 select ST_GeomFromText('Polygon((117.357442 30.231278,119.235188 30.231278,119.235188 32.614617,117.357442 32.614617,117.357442 30.231278))');
 ```
 
-## 2.2 设计Geometry字段表
+### 2.2 设计Geometry字段表
 
-### 2.2.1 政区表：Geometry=Polygon
+#### 2.2.1 政区表：Geometry=Polygon
 
 ```sql
 drop table if EXISTS aggregate_state;
@@ -61,7 +61,7 @@ create table aggregate_state(
 );
 ```
 
-### 2.2.2 空间业务表：Geometry=Point
+#### 2.2.2 空间业务表：Geometry=Point
 
 ```plsql
 drop table if EXISTS aggregate_spatial;
@@ -81,7 +81,7 @@ create table aggregate_spatial(
 );
 ```
 
-## 2.3 保存Geometry的类型
+### 2.3 保存Geometry的类型
 
 ![img](https://cdn.bianchengquan.com/556f391937dfd4398cbac35e050a2177/blog/5ffd2c48b07aa.png)
 
@@ -96,7 +96,7 @@ ST_Y(st_centroid(ST_GeomFromText('SRID=4326;Polygon((117.357442 30.231278,119.23
 
 注意：SRID必须与设计的表对应，且Geometry的类型要对应，insert into示例还计算了面的中心展示位置方便聚合数据输出到地图显示。
 
-### 2.3.1 Multipoint多点保存
+#### 2.3.1 Multipoint多点保存
 
 ```sql
 CREATE TABLE xh_yw.xh_point_tb

@@ -1,10 +1,10 @@
 - [PostgreSQL+PostGIS 的使用](https://www.cnblogs.com/kaituorensheng/p/4647901.html)
 
-# 一、PostGIS中的几何类型
+## 一、PostGIS中的几何类型
 
 PostGIS支持所有OGC规范的“Simple Features”类型，同时在此基础上扩展了对3DZ、3DM、4D坐标的支持。
 
-## 1.1 OGC的WKB和WKT格式
+### 1.1 OGC的WKB和WKT格式
 
 OGC定义了两种描述几何对象的格式，分别是WKB（Well-Known Binary）和WKT（Well-Known Text）。
 
@@ -25,7 +25,7 @@ INSERT INTO table ( SHAPE, NAME )
 VALUES ( GeomFromText('POINT(116.39 39.9)', 4326), '北京');
 ```
 
-## 1.2 EWKT、EWKB和Canonical格式
+### 1.2 EWKT、EWKB和Canonical格式
 
 EWKT和EWKB相比OGC WKT和WKB格式主要的扩展有3DZ、3DM、4D坐标和内嵌空间参考支持。
 
@@ -45,7 +45,7 @@ VALUES ( GeomFromEWKT('SRID=4326;POINTM(116.39 39.9 10)'), '北京' )
 
 Canonical格式是16进制编码的几何对象，直接用SQL语句查询出来的就是这种格式。
 
-## 1.3 SQL-MM格式
+### 1.3 SQL-MM格式
 
 SQL-MM格式定义了一些插值曲线，这些插值曲线和EWKT有点类似，也支持3DZ、3DM、4D坐标，但是不支持嵌入空间参考。
 
@@ -57,9 +57,9 @@ SQL-MM格式定义了一些插值曲线，这些插值曲线和EWKT有点类似�
 - MULTICURVE((0 0, 5 5),CIRCULARSTRING(4 0, 4 4, 8 4)) ——多曲线
 - MULTISURFACE(CURVEPOLYGON(CIRCULARSTRING(0 0, 4 0, 4 4, 0 4, 0 0),(1 1, 3 3, 3 1, 1 1)),((10 10, 14 12, 11 10, 10  10),(11 11, 11.5 11, 11 11.5, 11 11))) ——多曲面
 
-# 二、 PostGIS中空间信息处理的实现
+## 二、 PostGIS中空间信息处理的实现
 
-## 2.1 spatial_ref_sys表
+### 2.1 spatial_ref_sys表
 
 在基于PostGIS模板创建的数据库的public模式下，有一个spatial_ref_sys表，它存放的是OGC规范的空间参考。我们取我们最熟悉的4326参考看一下：
 
@@ -77,13 +77,13 @@ GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS  84",6378137,298.257223563,AUTHOR
 +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs
 ```
 
-## 2.2 geometry_columns表
+### 2.2 geometry_columns表
 
 geometry_columns表存放了当前数据库中所有几何字段的信息，比如我当前的库里面有两个空间表，在geometry_columns表中就可以找到这两个空间表中几何字段的定义：
 
 其中f_table_schema字段表示的是空间表所在的模式，f_table_name字段表示的是空间表的表名，f_geometry_column字段表示的是该空间表中几何字段的名称，srid字段表示的是该空间表的空间参考。
 
-## 2.3 在PostGIS中创建一个空间表
+### 2.3 在PostGIS中创建一个空间表
 
 在PostGIS中创建一个包含几何字段的空间表分为2步：第一步创建一个一般表，第二步给这个表添加几何字段。
 
@@ -99,7 +99,7 @@ create table test.cities (id int4, name varchar(20))
 select AddGeometryColumn('test', 'cities', 'shape', 4326, 'POINT', 2)
 ```
 
-## 2.4 PostGIS对几何信息的检查
+### 2.4 PostGIS对几何信息的检查
 
 PostGIS可以检查几何信息的正确性，这主要是通过IsValid函数实现的。
 以下语句分辨检查了2个几何对象的正确性，显然，(0, 0)点和(1,1)点可以构成一条线，但是(0, 0)点和(0, 0)点则不能构成，这个语句执行以后的得出的结果是TRUE,FALSE。
@@ -121,7 +121,7 @@ ERROR: new row for relation "cities" violates check constraint "geometry_valid"
 SQL 状态: 23514
 ```
 
-## 2.5 PostGIS中的空间索引
+### 2.5 PostGIS中的空间索引
 
 数据库对多维数据的存取有两种索引方案，R-Tree和GiST（Generalized Search Tree），在PostgreSQL中的GiST比R-Tree的健壮性更好，因此PostGIS对空间数据的索引一般采用GiST实现。
 
@@ -136,13 +136,13 @@ USING gist
 
 另外要注意的是，空间索引只有在进行基于边界范围的查询时才起作用，比如“&&”操作。
 
-# 三、 PostGIS中的常用函数
+## 三、 PostGIS中的常用函数
 
 以下内容包括比较多的尖括号，发布到blogger的时候会显示不正常，内容太多我也无暇一个个手动改代码，因此如有问题就去参考PostGIS官方文档。
 
 首先需要说明一下，这里许多函数是以ST_[X]yyy形式命名的，事实上很多函数也可以通过xyyy的形式访问，在PostGIS的函数库中我们可以看到这两种函数定义完全一样。
 
-## 3.1 OGC标准函数
+### 3.1 OGC标准函数
 
 管理函数：
 添加几何字段 AddGeometryColumn(, , , , , )
@@ -242,7 +242,7 @@ ST_GeomCollFromWKB(bytea,[])
 ST_BdPolyFromText(text WKT, integer SRID)
 ST_BdMPolyFromText(text WKT, integer SRID)
 
-# 四、 PostGIS示例
+## 四、 PostGIS示例
 
 下面我们通过一个简单的Flex应用示例来看一下PostGIS的用法：
 
@@ -278,109 +278,109 @@ import java.util.HashMap;
 
 public class Wind
 {
-private Connection conn = null;
+    private Connection conn = null;
 
-public Connection getConn()
-{
-if (conn==null)
-{
-try
-{
-Class.forName("org.postgresql.Driver");
-String url = "jdbc:postgresql://localhost:5432/sde" ;
-conn = DriverManager.getConnection(url, "sde" , "pwd" );
-conn.setAutoCommit(false);
-}
-catch(Exception e)
-{
-System.err.print(e);
-}
-}
+    public Connection getConn()
+    {
+        if (conn==null)
+        {
+            try
+            {
+                Class.forName("org.postgresql.Driver");
+                String url = "jdbc:postgresql://localhost:5432/sde" ;
+                conn = DriverManager.getConnection(url, "sde" , "pwd" );
+                conn.setAutoCommit(false);
+            }
+            catch(Exception e)
+            {
+                System.err.print(e);
+            }
+        }
 
-return conn;
-}
+        return conn;
+    }
 
-public ArrayList > getWinds()
-{
-ArrayList > result = new ArrayList >();
+    public ArrayList > getWinds()
+    {
+        ArrayList > result = new ArrayList >();
 
-if ( this.getConn()==null )
-return result;
+        if ( this.getConn()==null )
+            return result;
 
-try
-{
-String sql = "select *,ST_AsGeoJson(shape) from sde.wind";
+        try
+        {
+            String sql = "select *,ST_AsGeoJson(shape) from sde.wind";
 
-Statement st = this.getConn().createStatement();
-st.setFetchSize(0);
-ResultSet rs = st.executeQuery(sql);
-while (rs.next())
-{
-HashMap map = new HashMap ();
-map.put("shape", rs.getString("ST_AsGeoJson"));
-map.put("velocity", rs.getString("velocity"));
-map.put("direction", rs.getString("direction"));
-result.add(map);
-}
-rs.close();
-st.close();
-}
-catch(Exception e)
-{
-System.err.print(e);
-}
+            Statement st = this.getConn().createStatement();
+            st.setFetchSize(0);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next())
+            {
+                HashMap map = new HashMap ();
+                map.put("shape", rs.getString("ST_AsGeoJson"));
+                map.put("velocity", rs.getString("velocity"));
+                map.put("direction", rs.getString("direction"));
+                result.add(map);
+            }
+            rs.close();
+            st.close();
+        }
+        catch(Exception e)
+        {
+            System.err.print(e);
+        }
 
-return result;
-}
+        return result;
+    }
 
- 
 
-public ArrayList > getEffectZones()
-{
-ArrayList > result = new ArrayList >();
 
- 
+    public ArrayList > getEffectZones()
+    {
+        ArrayList > result = new ArrayList >();
 
-if ( this.getConn()==null )
-return result;
 
-try
-{
-String sql = "select *,ST_AsGeoJson(";
-sql+= "ST_Buffer(";
-sql+= "ST_PolygonFromText(";
-sql+= "'POLYGON(('";
-sql+= "||ST_X(shape)||' '||ST_Y(shape)||','";
-sql+= "||ST_X(shape)+velocity*cos((direction+15)*PI()/180)/20||' '||ST_Y(shape)+velocity*sin((direction+15)*PI()/180)/20||','";
-sql+= "||ST_X(shape)+velocity*cos((direction-15)*PI()/180)/20||' '||ST_Y(shape)+velocity*sin((direction-15)*PI()/180)/20||','";
-sql+= "||ST_X(shape)||' '||ST_Y(shape)||'))'";
-sql+= ")";
-sql+= ", velocity/50";
-sql+= ")";
-sql+= ") ";
-sql+="from sde.wind";
 
-Statement st = this.getConn().createStatement();
-st.setFetchSize(0);
-ResultSet rs = st.executeQuery(sql);
-while (rs.next())
-{
-HashMap map = new HashMap ();
-map.put("shape", rs.getString("ST_AsGeoJson"));
-map.put("velocity", rs.getString("velocity"));
-map.put("direction", rs.getString("direction"));
-result.add(map);
-}
-rs.close();
-st.close();
-}
-catch(Exception e)
-{
-System.err.print(e);
-}
+        if ( this.getConn()==null )
+            return result;
 
-return result;
-}
+        try
+        {
+            String sql = "select *,ST_AsGeoJson(";
+            sql+= "ST_Buffer(";
+            sql+= "ST_PolygonFromText(";
+            sql+= "'POLYGON(('";
+            sql+= "||ST_X(shape)||' '||ST_Y(shape)||','";
+            sql+= "||ST_X(shape)+velocity*cos((direction+15)*PI()/180)/20||' '||ST_Y(shape)+velocity*sin((direction+15)*PI()/180)/20||','";
+            sql+= "||ST_X(shape)+velocity*cos((direction-15)*PI()/180)/20||' '||ST_Y(shape)+velocity*sin((direction-15)*PI()/180)/20||','";
+            sql+= "||ST_X(shape)||' '||ST_Y(shape)||'))'";
+            sql+= ")";
+            sql+= ", velocity/50";
+            sql+= ")";
+            sql+= ") ";
+            sql+="from sde.wind";
+
+            Statement st = this.getConn().createStatement();
+            st.setFetchSize(0);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next())
+            {
+                HashMap map = new HashMap ();
+                map.put("shape", rs.getString("ST_AsGeoJson"));
+                map.put("velocity", rs.getString("velocity"));
+                map.put("direction", rs.getString("direction"));
+                result.add(map);
+            }
+            rs.close();
+            st.close();
+        }
+        catch(Exception e)
+        {
+            System.err.print(e);
+        }
+
+        return result;
+    }
 
 }
 ```

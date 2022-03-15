@@ -1,14 +1,10 @@
 - [PostGIS 常用函数](https://www.cnblogs.com/Jason1019/p/13474474.html)
 
+## 一、OGC标准函数
 
+### 1.1 管理函数
 
-
-
-# 一、OGC标准函数
-
-## 1.1 管理函数
-
-```
+```plsql
 --添加几何字段
 AddGeometryColumn(, , , , , )
 
@@ -22,9 +18,9 @@ Probe_Geometry_Columns()
 ST_SetSRID(geometry, integer)
 ```
 
-## 1.2 几何对象关系函数
+### 1.2 几何对象关系函数
 
-```
+```plsql
 --获取两个几何对象间的距离
 ST_Distance(geometry, geometry)
 
@@ -68,9 +64,9 @@ ST_Relate(geometry, geometry, intersectionPatternMatrix)
 ST_Relate(geometry, geometry)
 ```
 
-## 1.3 几何对象处理函数
+### 1.3 几何对象处理函数
 
-```
+```plsql
 --修复错误图形 返回Geometry对象
 ST_Buffer(geom, 0.0)
 ST_MakeValid(geom)
@@ -118,9 +114,9 @@ ST_Union(geometry set)
 ST_MemUnion(geometry set)
 ```
 
-## 1.4 几何对象存取函数
+### 1.4 几何对象存取函数
 
-```
+```plsql
 --获取几何对象的WKT描述 
 ST_AsText(geometry)
 
@@ -197,9 +193,9 @@ ST_Z(geometry)
 ST_M(geometry)
 ```
 
-## 1.5 几何对象构造函数
+### 1.5 几何对象构造函数
 
-```
+```plsql
 ST_PointFromText(text,[])ST_GeomFromText(text)
 ST_LineFromText(text,[])
 ST_LinestringFromText(text,[])
@@ -224,15 +220,11 @@ ST_BdPolyFromText(text WKT, integer SRID)
 ST_BdMPolyFromText(text WKT, integer SRID)
 ```
 
+## 二、扩展函数
 
+### 2.1 管理函数
 
-# 二、扩展函数
-
-## 2.1 管理函数
-
-
-
-```
+```plsql
 postgis_lib_version()
 postgis_lib_build_date()
 postgis_script_build_date()
@@ -245,13 +237,9 @@ postgis_uses_stats()
 postgis_full_version()
 ```
 
+### 2.2 几何操作符
 
-
-## 2.2 几何操作符
-
-
-
-```
+```plsql
 A范围=B范围 A = B
 A范围覆盖B范围或A范围在B范围左侧 A &<> B
 A范围在B范围左侧 A <<>> B
@@ -263,13 +251,9 @@ A范围包含B范围 A ~ B
 A范围覆盖B范围 A && B
 ```
 
+### 2.3 几何量测函数
 
-
-## 2.3 几何量测函数
-
-
-
-```
+```plsql
 --量测面积 
 ST_Area(geometry)
 --根据经纬度点计算在地球曲面上的距离，单位米，地球半径取值6370986米 
@@ -296,13 +280,9 @@ ST_perimeter3d(geometry)
 ST_azimuth(geometry, geometry)
 ```
 
+### 2.4 几何对象输出
 
-
-## 2.4 几何对象输出
-
-
-
-```
+```plsql
 ST_AsBinary(geometry,{'NDR'|'XDR'})
 ST_AsEWKT(geometry)
 ST_AsEWKB(geometry, {'NDR'|'XDR'})
@@ -313,13 +293,9 @@ ST_AsKML([version], geometry, [precision])
 ST_AsGeoJson([version], geometry, [precision], [options])
 ```
 
+### 2.5 几何对象创建
 
-
-## 2.5 几何对象创建
-
-
-
-```
+```plsql
 ST_GeomFromEWKB(bytea)
 ST_MakePoint(, , [], [])
 ST_MakePointM(, , )
@@ -337,13 +313,9 @@ ST_Dump(geometry) --可以将mutigeometry 分成单个geometry
 ST_DumpRings(geometry)
 ```
 
+### 2.6 几何对象编辑
 
-
-## 2.6 几何对象编辑
-
-
-
-```
+```plsql
 --给几何对象添加一个边界，会使查询速度加快 
 ST_AddBBOX(geometry)
 
@@ -410,13 +382,9 @@ ST_Segmentize(geometry, maxlength)
 ST_LineMerge(geometry)
 ```
 
+### 2.7 线性参考
 
-
-## 2.7 线性参考
-
-
-
-```
+```plsql
 --根据location（0-1）获得该位置的点 
 ST_line_interpolate_point(linestring, location)
 
@@ -433,13 +401,9 @@ ST_locate_along_measure(geometry, float8)
 ST_locate_between_measures(geometry, float8, float8)
 ```
 
+### 2.8 杂项功能函数
 
-
-## 2.8 杂项功能函数
-
-
-
-```
+```plsql
 --几何对象的摘要 
 ST_Summary(geometry)
 
@@ -493,13 +457,9 @@ ST_ZMax(box3d)
 ST_Accum(geometry set)
 ```
 
+### 2.9 长事务支持
 
-
-## 2.9 长事务支持
-
-
-
-```
+```plsql
 --启用/关闭长事务支持，重复调用无副作用 
 EnableLongTransactions()
 DisableLongTransactions()
@@ -516,23 +476,3 @@ UnlockRows()
 --在当前事务中添加授权ID 
 AddAuth()
 ```
-
-
-
-转载自:https://www.w3cschool.cn/wqf_database/wqf_database-ip53284h.html
-
-1. `ST_GeomFromEWKB(bytea)`
-2. `ST_MakePoint(,,[],[])`
-3. `ST_MakePointM(,,)`
-4. `ST_MakeBox2D(,)`
-5. `ST_MakeBox3D(,)`
-6. `ST_MakeLine(geometry set)`
-7. `ST_MakeLine(geometry, geometry)`
-8. `ST_LineFromMultiPoint(multipoint)`
-9. `ST_MakePolygon(linestring,[linestring[]])`
-10. `ST_BuildArea(geometry)`
-11. `ST_Polygonize(geometry set)`
-12. `ST_Collect(geometry set)`
-13. `ST_Collect(geometry, geometry)`
-14. `ST_Dump(geometry)`
-15. `ST_DumpRings(geometry)`
