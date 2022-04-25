@@ -1,4 +1,5 @@
 - [基于pgrouting的路径规划处理 - 开放GIS - 博客园 (cnblogs.com)](https://www.cnblogs.com/share-gis/p/16148019.html)
+- [postgresql路径规划pgrouting使用_GliangJu的博客-CSDN博客_pgrouting](https://blog.csdn.net/GliangJu/article/details/118416634)
 
 对于GIS业务来说，路径规划是非常基础的一个业务，一般公司如果处理，都会直接选择调用已经成熟的第三方的接口，比如高德、百度等。当然其实路径规划的算法非常多，像比较著名的Dijkstra、A*算法等。当然本篇文章不是介绍算法的，本文作者会根据pgrouting已经集成的Dijkstra算法来，结合postgresql数据库来处理最短路径。
 
