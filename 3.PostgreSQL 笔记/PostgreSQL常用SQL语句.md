@@ -6,7 +6,6 @@
 
 ```sql
 select count(*) from pg_stat_activity;
-
 ```
 
 **2、获取数据库最大连接数**
