@@ -51,8 +51,6 @@ minedb=# ALTER ROLE postgres SET SEARCH_PATH ='ROS';
 ALTER ROLE
 ```
 
-
-
 # 二、修改配置文件
 
 ## 2.1 application.yml
