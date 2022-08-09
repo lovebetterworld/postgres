@@ -1,0 +1,318 @@
+- [pgRouting教程七：使用SQL存储过程 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/135285106)
+
+pgRouting函数提供低级接口，在为更高级别的应用程序开发时，需要在SQL查询中调用pgRouting函数以满足应用需求。随着这些SQL查询的逻辑变得更加复杂，我们应该将它们存储在PostgreSQL存储过程或函数中，相当于对pgRouting函数再进行一次封装，这样我们在使用高级语言开发应用程序时只要调用我们定义的存储过程即可。
+
+**注意：**在PostgreSQL中存储过程就是函数。
+
+## 一、应用程序的需求
+
+将要开发的存储过程具有以下需求：
+
+**1、规划车辆路径**
+
+- 不使用人行道（pedestrian）。
+- 一旦数据库视图被创建，它可以被复用。
+- 道路的成本是时间，单位是分钟。
+
+**2、规划的结果路径具有道路名信息。**
+
+**3、规划的结果路径中的几何线段具有正确的方向**
+
+- 在结果中返回路径的几何信息。
+- 返回结果路径的各个路段的大地方位角（单位十进制度）。
+- 几何信息处理需要得到正确的方向。
+
+**1.1、练习1 —— 允许被车辆行驶的路径**
+
+车辆不允许在行人道路上行驶，因此：
+
+- 创建包含车辆可以行驶的道路的数据库视图。
+- 道路成本设置为时间（单位分钟）。
+- 验证以上过程减少了多少路段。
+
+```sql
+CREATE VIEW vehicle_net AS
+	SELECT gid, source, target,
+		   cost / 1.3 / 60 AS cost,
+		   reverse_cost / 1.3 / 60 AS reverse_cost, -- 假设行人每秒走1.3m
+		   geom
+	FROM shenzhen_roads 
+	WHERE fclass NOT IN ('steps', 'cycleway', 'footway', 'track_grade2', 'track');
+	
+-- 验证
+SELECT count(*) FROM shenzhen_roads;
+SELECT count(*) FROM vehicle_net;
+```
+
+后面两条SQL语句分别查询出原先的道路具有111185条，新创建的vehicle_net视图中具有道路92971条（没有包含行人道路和铁轨）。
+
+**1.2、练习2 —— 将路网限制在一个范围内**
+
+![img](https://pic3.zhimg.com/80/v2-dc603d3e29f9a7655ead8886077526e6_720w.jpg)
+
+将车辆限制在只能在前海湾附近区域（如上图红框）中行驶，该区域的范围是：（12673569, 2573130, 12680410, 2578570）坐标系ESPG:3857。
+
+- 车辆只能在区域（12673569, 2573130, 12680410, 2578570）中行驶。
+- 创建一个保存该区域路段的数据库视图。
+- 验证缺少的路段数。
+
+```sql
+CREATE VIEW little_net AS
+	SELECT *
+	FROM vehicle_net
+	WHERE vehicle_net.geom && ST_MakeEnvelope(12673569, 2573130, 12680410, 2578570, 3857);
+
+-- 验证
+SELECT COUNT(*) FROM little_net; 
+```
+
+![img](https://pic1.zhimg.com/80/v2-feb5e7203faebf32aec1a71f83619c78_720w.jpg)
+
+上面的SQL语句使用了一个PostGIS函数**ST_MakeEnvelope**创建一个矩形多边形用于筛选数据，它的官方API文档：
+
+[ST_MakeEnvelopepostgis.net/docs/ST_MakeEnvelope.html](https://link.zhihu.com/?target=http%3A//postgis.net/docs/ST_MakeEnvelope.html)
+
+**1.3、练习3 —— 结果包含道路名信息**
+
+![img](https://pic1.zhimg.com/80/v2-c1cad00a9dbf23cc429fcd120896cdc8_720w.jpg)
+
+规划车辆从南方医科大学深圳医院到前海金融中心，结果包含道路名信息
+
+- 车辆从南方医科大学深圳医院出发（id: 15938）。
+- 车辆到前海金融中心（id: 9064）。
+- 结果包含道路名信息
+
+```sql
+SELECT dijkstra.*, ways.name FROM pgr_dijkstra(
+	'SELECT gid AS id, * FROM little_net',
+	15938, 9064
+) AS dijkstra LEFT JOIN shenzhen_roads AS ways
+ON (edge = gid) 
+ORDER BY seq;
+```
+
+![img](https://pic4.zhimg.com/80/v2-fb392c808014d08ea16749866c0c65eb_720w.jpg)
+
+![img](https://pic3.zhimg.com/80/v2-1da1bd95806edfc8371e59394058b55a_720w.jpg)
+
+**注：**因为数据的原因，有的道路没有道路名信息。另外这里的SQL语句性能肯定不佳，这里只是为了体现很多业务场景下SQL语句的逻辑是很复杂的，从而说明存储过程的重要性。
+
+## 二、玩转几何信息
+
+**2.1、练习4 —— 路径的几何信息（WKT格式）**
+
+规划车辆从南方医科大学深圳医院到前海金融中心，结果包含如下信息：
+
+- 路径的道路名
+- 道路的几何信息（WKT格式）
+
+```sql
+SELECT dijkstra.*, ways.name, ST_AsText(ways.geom) FROM pgr_dijkstra(
+	'SELECT gid AS id, * FROM little_net',
+	15938, 9064
+) AS dijkstra LEFT JOIN shenzhen_roads AS ways
+ON (edge = gid) 
+ORDER BY seq;
+```
+
+![img](https://pic1.zhimg.com/80/v2-082407148c25b57b036599b7c00b8b68_720w.jpg)
+
+![img](https://pic2.zhimg.com/80/v2-110c2bf5a0c5cb52edb5d00eb2899729_720w.jpg)
+
+**2.2、练习5 —— 路径的几何信息（二进制格式）**
+
+规划车辆从南方医科大学深圳医院到前海金融中心，结果包含如下信息：
+
+- 路径的道路名
+- 道路的几何信息（二进制格式）
+
+注意：以下语句使用了**WITH**操作符，它可以为查询定义一张临时表。
+
+```sql
+WITH 
+dijkstra AS(
+	SELECT * FROM pgr_dijkstra(
+		'SELECT gid AS id, * FROM little_net',
+		15938, 9064
+	) 
+)
+SELECT dijkstra.*, ways.name, ways.geom AS route_geom
+FROM dijkstra LEFT JOIN shenzhen_roads AS ways
+ON (edge = gid) 
+ORDER BY seq;
+```
+
+![img](https://pic1.zhimg.com/80/v2-f8f230cfd2a57b0dfb06a29155fd0038_720w.jpg)
+
+![img](https://pic1.zhimg.com/80/v2-5f67ec90987b162de94baf063ce4bcb8_720w.jpg)
+
+**2.3、练习6 —— 使用几何信息求方位角**
+
+规划车辆从南方医科大学深圳医院到前海金融中心，结果包含如下信息：
+
+- 路径的道路名
+- 路径的几何信息（二进制格式）
+- 路径各个路段的大地方位角（单位十进制度）
+
+```sql
+WITH 
+dijkstra AS(
+	SELECT * FROM pgr_dijkstra(
+		'SELECT gid AS id, * FROM little_net',
+		15938, 9064
+	) 
+),
+get_geom AS (
+    SELECT dijkstra.*, ways.name, ways.geom AS route_geom
+    FROM dijkstra LEFT JOIN shenzhen_roads AS ways ON (edge = gid)
+    ORDER BY seq)
+SELECT seq, name, cost,
+    -- calculating the azimuth
+    degrees(ST_azimuth(ST_StartPoint(route_geom), ST_EndPoint(route_geom))) AS azimuth,
+    ST_AsText(route_geom),
+    route_geom
+FROM get_geom
+ORDER BY seq;
+```
+
+![img](https://pic1.zhimg.com/80/v2-a61639073b725a2070199358c4a0f3b8_720w.jpg)
+
+![img](https://pic2.zhimg.com/80/v2-62bef86b7d27da3836ef5d051874b091_720w.jpg)
+
+这里使用了一个PostGIS函数**ST_Azimuth**，简单来说它基于路段起点的正北方向求路段的方位角，结果是弧度制，需要使用PostgreSQL自带的**degrees**函数将其转换为十进制度。ST_Azimuth函数的官方API文档：
+
+[ST_Azimuthpostgis.net/docs/ST_Azimuth.html![img](https://pic1.zhimg.com/v2-1a7ee273cc4462b84f1e3c720e64db44_ipico.jpg)](https://link.zhihu.com/?target=http%3A//postgis.net/docs/ST_Azimuth.html)
+
+**2.4、练习7 —— 几何信息的方向性**
+
+当数据库生成一个结果路径时，结果路径的双向路段（oneway字段是'B'）可以是正向的，也可以是反向的。那么可以得出如下结论：
+
+- 结果路径中的双向路段是正向的 —— 路段几何信息的起始点就是source字段指的那个顶点。
+- 结果路径中的双向路段是反向的 —— 路段几何信息的起始点就是target字段指的那个顶点。此时为了满足需求，求方位角需要将路段几何信息逆序排列。
+
+总之我们需要保证计算出来的各路段的方位角能让各个路段沿着整条路径。
+
+规划车辆从南方医科大学深圳医院到前海金融中心，结果包含如下信息：
+
+- 路段几何信息的终止点坐标必须与下一条路段的起始点坐标一致。
+- 路径的几何信息（二进制格式）
+- 路径各个路段的大地方位角（单位十进制度）
+
+```sql
+WITH 
+dijkstra AS(
+	SELECT * FROM pgr_dijkstra(
+		'SELECT gid AS id, * FROM little_net',
+		15938, 9064
+	) 
+),
+get_geom AS (
+    SELECT dijkstra.*, ways.name, 
+	-- 将反向路段的几何信息逆序排列
+    CASE
+        WHEN dijkstra.node = ways.source THEN ways.geom
+        ELSE ST_Reverse(ways.geom)
+	END AS route_geom
+    FROM dijkstra LEFT JOIN shenzhen_roads AS ways ON (edge = gid)
+    ORDER BY seq)
+SELECT seq, name, cost,
+    -- 计算方位角
+    degrees(ST_azimuth(ST_StartPoint(route_geom), ST_EndPoint(route_geom))) AS azimuth,
+    ST_AsText(route_geom),
+    route_geom
+FROM get_geom
+ORDER BY seq;
+```
+
+![img](https://pic2.zhimg.com/80/v2-39d92da9d89817f20d7e28c4b8e06e41_720w.jpg)
+
+![img](https://pic1.zhimg.com/80/v2-5893402bd76d1bfab4409586a08f0a58_720w.jpg)
+
+以上SQL语句使用了PostGIS函数**ST_Reverse**，它的功能是将几何信息的坐标点信息逆序排列，它的官方API文档：
+
+[ST_Reversepostgis.net/docs/ST_Reverse.html](https://link.zhihu.com/?target=http%3A//postgis.net/docs/ST_Reverse.html)
+
+## 三、创建函数（存储过程）
+
+我们创建自定义函数要注意以下命名规则：
+
+- 避免使用PostGIS和pgRouting已经使用的函数名。
+- 避免使用"**pgr_**"和"**ST_**"作为函数名的开头。
+
+**3.1、练习8 —— 创建一个函数**
+
+我们创建的函数具有如下特点：
+
+- 可以在车辆道路的全部区域进行搜索。
+- 将数据库视图作为参数。
+- 结果包含道路名、路径的几何信息（二进制格式）、路径各个路段的大地方位角（单位十进制度）等等。
+
+```sql
+CREATE OR REPLACE FUNCTION wrk_dijkstra(
+    IN edges_subset regclass,	-- 视图作为参数
+    IN source BIGINT,
+    IN target BIGINT,
+    OUT seq INTEGER,
+    OUT gid BIGINT,
+    OUT name TEXT,
+    OUT cost FLOAT,
+    OUT azimuth FLOAT,
+    OUT route_readable TEXT,
+    OUT route_geom geometry
+) RETURNS SETOF record AS 
+$BODY$
+    WITH
+    dijkstra AS (
+        SELECT * FROM pgr_dijkstra(
+            -- 使用参数化的视图
+            'SELECT gid AS id, * FROM ' || $1,
+            $2, $3)
+    ),
+    get_geom AS (
+        SELECT dijkstra.*, ways.name,
+            CASE
+                WHEN dijkstra.node = ways.source THEN geom
+                ELSE ST_Reverse(geom)
+            END AS route_geom
+        FROM dijkstra JOIN shenzhen_roads AS ways ON (edge = gid)
+        ORDER BY seq)
+    SELECT
+        seq,
+        edge,
+        name,
+        cost,
+        degrees(ST_azimuth(ST_StartPoint(route_geom), ST_EndPoint(route_geom))) AS azimuth,
+        ST_AsText(route_geom),
+        route_geom
+    FROM get_geom
+    ORDER BY seq;
+$BODY$
+LANGUAGE 'sql';
+```
+
+**3.2、练习9 —— 使用函数**
+
+现在要规划车辆从南方医科大学深圳医院到前海金融中心，可以直接使用wrk_dijkstra函数。
+
+- 车辆从南方医科大学深圳医院出发（id: 15938）。
+- 车辆到前海金融中心（id: 9064）
+
+```sql
+SELECT * FROM wrk_dijkstra('vehicle_net', 15938, 9064);
+```
+
+**3.3、练习10 —— 保存函数**
+
+可以将函数保存起来到一个SQL文件：E:/wrk_dijkstra.sql。
+
+这个SQL文件可以用于在其他数据库安装wrk_dijkstra函数，比如在pgsql命令行中执行以下命令：
+
+```text
+psql -U postgres -d city_routing -f E:/wrk_dijkstra.sql
+```
+
+或者在GUI工具中点击如下按钮打开wrk_dijkstra.sql文件并执行。
+
+![img](https://pic2.zhimg.com/80/v2-c3edd7d1f09555a3de80962c4c1dda09_720w.jpg)
+
+或者直接复制、粘贴。。。本文完。
