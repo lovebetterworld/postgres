@@ -7,6 +7,7 @@
 ## 1 生成拓扑
 
 要生成最佳路径，首先要生成合法的拓扑。
+
 生成拓扑前，需要添加两个字段，用来存储线段的首尾编号
 
 ```sql
@@ -39,6 +40,7 @@ SELECT pgr_createTopology('nyc_roads', 0.00001, 'geom', 'gid');
 ## 2 生成最佳路径
 
 pgrouting支持的最佳路径算法很多。
+
 官方说明：[https://docs.pgrouting.org/3.1/en/search.html?q=+shortest+path&check_keywords=yes&area=default](https://docs.pgrouting.org/3.1/en/search.html?q= shortest path&check_keywords=yes&area=default)
 这里以Shortest Path A*和Shortest Path Dijkstra（狄克斯特拉）为例，介绍如何生成最佳路径
 
@@ -90,7 +92,7 @@ SELECT * from  public.pgr_dijkstra(
 
 ### 2.2 Shortest Path A*算法举例
 
-与Shortest Path Dijkstra算法类似，只是SQL需要用到每条线段的起点和重点的坐标，其他参数和pgr_dijkstra都一样。
+与Shortest Path Dijkstra算法类似，只是SQL需要用到每条线段的起点和终点的坐标，其他参数和pgr_dijkstra都一样。
 
 ```sql
 ALTER TABLE nyc_roads ADD COLUMN x1 double precision;

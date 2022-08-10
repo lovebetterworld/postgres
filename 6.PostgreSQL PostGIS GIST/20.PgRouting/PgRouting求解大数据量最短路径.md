@@ -37,7 +37,6 @@
 wget https://www.openstreetmap.org/api/0.6/map?bbox=116.3849,39.9093,116.3969,39.9226 -O map.osm --no-check-certificate
 # 导入数据
 osm2pgrouting -f 地图数据 -h 数据库host -U 数据库用户名 -d 数据库名称 -p 数据库端口 -W 数据库密码 --conf=/usr/share/osm2pgrouting/mapconfig_for_cars.xml rm 地图数据
-1234
 ```
 
 导入后的输出信息如下
@@ -104,7 +103,6 @@ Execution ended at:   Wed Apr 27 16:11:47 2022
 Elapsed time: 0.459 Seconds.
 User CPU time: -> 0.16 seconds
 #########################
-
 ```
 
 推荐使用[dbeaver](https://github.com/dbeaver/dbeaver/wiki/Working-with-Spatial-GIS-data)打开，可以直接查看地图数据，也是基于OpenStreetMap的。

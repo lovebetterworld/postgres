@@ -12,7 +12,7 @@ Dijkstra算法是第一个在pgRouting中实现的算法。它不需要除id、s
 
 详细信息可以查看这篇文章：
 
-[不睡觉的怪叔叔：pgRouting官方文档：pgr_dijkstra5 赞同 · 1 评论文章![img](https://pic3.zhimg.com/v2-5821893330d6b6d1489210b16210e6c2_180x120.jpg)](https://zhuanlan.zhihu.com/p/85905703)
+[不睡觉的怪叔叔：pgRouting官方文档：pgr_dijkstra5 赞同 · 1 评论文章](https://zhuanlan.zhihu.com/p/85905703)
 
 **注意：**
 
@@ -163,7 +163,7 @@ SELECT * FROM pgr_dijkstra(
 
 详细信息可以查看下面这篇文章：
 
-[不睡觉的怪叔叔：pgRouting官方文档：pgr_dijkstraCost2 赞同 · 1 评论文章![img](https://pic4.zhimg.com/v2-8ff86dc705acfc77c3320737476f87cb_180x120.jpg)](https://zhuanlan.zhihu.com/p/86539197)
+[不睡觉的怪叔叔：pgRouting官方文档：pgr_dijkstraCost2 赞同 · 1 评论文章](https://zhuanlan.zhihu.com/p/86539197)
 
 **2.1、练习5——多个行人到不同的目的地，返回总代价**
 

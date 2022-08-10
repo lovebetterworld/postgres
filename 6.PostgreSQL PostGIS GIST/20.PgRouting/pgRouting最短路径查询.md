@@ -104,7 +104,7 @@ Dijkstra算法是第一个在pgRouting中实现的算法。它不需要除id、s
 
 ![img](https://img-blog.csdnimg.cn/857bd70f1e1e4ab8a611cd5d126d822b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5Lya6aOe55qE54yqYml1Yml1,size_9,color_FFFFFF,t_70,g_se,x_16)
 
-详情查看[pgRouting官方文档：pgr_dijkstra - 知乎原文地址： pgr_dijkstra - pgRouting Manual (2.6)本文所用的实验数据请参考下面这篇文章： 不睡觉的怪叔叔：pgRouting官方文档：简单数据 pgr_dijkstra —— 使用dijkstra算法返回最短路径。基于Boost.Graph实现…![img](https://static.zhihu.com/heifetz/assets/apple-touch-icon-152.a53ae37b.png)https://zhuanlan.zhihu.com/p/85905703](https://zhuanlan.zhihu.com/p/85905703) 
+详情查看[pgRouting官方文档：pgr_dijkstra - 知乎原文地址： pgr_dijkstra - pgRouting Manual (2.6)本文所用的实验数据请参考下面这篇文章： 不睡觉的怪叔叔：pgRouting官方文档：简单数据 pgr_dijkstra —— 使用dijkstra算法返回最短路径。基于Boost.Graph实现…https://zhuanlan.zhihu.com/p/85905703](https://zhuanlan.zhihu.com/p/85905703) 
 
 **注意：**
 

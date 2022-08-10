@@ -33,8 +33,6 @@ update road set rev_length=length;
 SELECT pgr_createTopology('road',0.000002,'geom','gid');
 ```
 
-[改编的三维空间A*star算法matlabtar![img](https://csdnimg.cn/release/blogv2/dist/components/img/star.png)0星超过10%的资源510KB![img](https://csdnimg.cn/release/blogv2/dist/components/img/arrowDownWhite.png)下载](https://download.csdn.net/download/xranmail/10624033)
-
 ## 4 创建最短路径函数
 
 ```sql
