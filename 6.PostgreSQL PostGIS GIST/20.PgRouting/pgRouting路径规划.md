@@ -4,11 +4,11 @@ pgRouting扩展了[PostgreSQL](https://so.csdn.net/so/search?q=PostgreSQL&spm=10
 
 ## 1 数据准备
 
-​    路网数据是关键，在保持道路完整性的同时，道路在相交的路口要打断，路口的各道路起点或终点最好是同一个点。同时做好拓扑检查（ArcMap），防止道路自相交、覆盖或被覆盖等拓扑问题。
+路网数据是关键，在保持道路完整性的同时，道路在相交的路口要打断，路口的各道路起点或终点最好是同一个点。同时做好拓扑检查（ArcMap），防止道路自相交、覆盖或被覆盖等拓扑问题。
 
 ## 2 路网入库
 
-​    使用pgAdmin在PostgreSQ新建数据库pgroute，并添加 postgis和pgrouting扩展。使用PostGIS工具将路网数据（road，坐标系为4326）导入pgroute数据库。
+使用pgAdmin在PostgreSQ新建数据库pgroute，并添加 postgis和pgrouting扩展。使用PostGIS工具将路网数据（road，坐标系为4326）导入pgroute数据库。
 
 ## 3 创建路网拓扑结构
 
