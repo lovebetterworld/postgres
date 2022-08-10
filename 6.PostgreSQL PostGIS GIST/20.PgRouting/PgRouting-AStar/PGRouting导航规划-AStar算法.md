@@ -12,6 +12,10 @@
 -- Add "source" and "target" column
 ALTER TABLE nyc_roads ADD COLUMN "source" integer;
 ALTER TABLE nyc_roads ADD COLUMN "target" integer;
+
+-- 创建索引，不然巨慢
+create index if not exists pgr_source_idx on nyc_roads("source");
+create index if not exists pgr_target_idx on nyc_roads("target");
 ```
 
 - source —— 用于保存路径起始顶点的id
