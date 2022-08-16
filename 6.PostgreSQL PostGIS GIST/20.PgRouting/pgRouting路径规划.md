@@ -81,11 +81,11 @@ begin
         return null; 
     end if ; 
  
-    -- 查询起点和起点最近的先的点
+    -- 查询起点和起点最近的线的点
     select  ST_ClosestPoint(v_startLine, ST_Geomfromtext('point('|| startx ||' ' || starty ||')',4326)) into v_statpoint; 
     raise notice 'v_statpoint %',  v_statpoint;
  
-    -- 查询终点和终点最近的先的点
+    -- 查询终点和终点最近的线的点
     select  ST_ClosestPoint(v_endLine, ST_GeomFromText('point('|| endx ||' ' || endy ||')',4326)) into v_endpoint; 
 	raise notice 'v_endpoint %',  v_endpoint;
  

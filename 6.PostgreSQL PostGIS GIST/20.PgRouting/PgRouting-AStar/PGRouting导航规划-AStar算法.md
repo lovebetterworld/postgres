@@ -9,6 +9,11 @@
 生成拓扑前，需要添加两个字段，用来存储线段的首尾编号
 
 ```sql
+-- 开启执行路网topo的插件
+create extension postgis;
+create extension postgis_topology;
+create extension pgrouting;
+
 -- Add "source" and "target" column
 ALTER TABLE nyc_roads ADD COLUMN "source" integer;
 ALTER TABLE nyc_roads ADD COLUMN "target" integer;
