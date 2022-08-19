@@ -1,8 +1,20 @@
-# postgresql 计算两点距离的2种方法小结
+#  1 PostGIS 如何计算两个经纬度之间的距离
+
+```sql
+SELECT ST_Distance(ST_GeomFromText('POINT(120.30 30.06)')::geography, ST_GeomFromText('POINT(120.36 30.16)')::geography));
+```
+
+注意：如果POINT是3857坐标系的，就需要转一下，转成4326坐标系的再进行计算，如下所示
+
+```sql
+SELECT ST_Distance(ST_GeomFromText('POINT(lon1 lat1)', 4326)::geography, ST_GeomFromText('POINT(lon2 lat2)', 4326)::geography);
+```
+
+# 2 算两点距离的2种方法小结
 
 postgresql计算两点距离
 
-### 下面两种方法：
+### 2.1 下面两种方法：
 
 ```plsql
 select 
